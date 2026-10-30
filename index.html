@@ -1,26 +1,41 @@
-An Autotag zone rwzafcpzc8 was created for you.
-
-Step 1: Include Adcash library
-Place the following JS script inside <head></head> of your page as high as possible.
-
-NOTE: If you already have Adcash lib included, it is unnecessary to include it again. In this case, skip step 1.
-
-<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-
-Step 2: Put the tag script on the page
-Copy the following JS code and paste it into the source code of your page below first library script.
-
-<script type="text/javascript">
-    aclib.runAutoTag({
-        zoneId: 'rwzafcpzc8',
-    });
-</script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#090d13">
+  <title>Open City</title>
+  <style>
+  html, body {
+    width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+    background: #090d13; overscroll-behavior: none;
   }
+  body { position: fixed; inset: 0; }
+  #game { position: fixed; inset: 0; display: block; width: 100vw !important; height: 100vh !important; }
+  #bigmap, #pausemenu { touch-action: auto; }
+  #bigmap { z-index: 60 !important; }
+  #bigmap canvas { position: relative; z-index: 61; pointer-events: auto; }
+
   #healthwrap {
     width: 176px; height: 12px; margin-bottom: 8px; border: 2px solid rgba(255,255,255,.75);
     border-radius: 6px; background: rgba(0,0,0,.55); overflow: hidden;
   }
   #health { height: 100%; width: 100%; background: linear-gradient(90deg,#2faf4e,#5fe07a); transition: width .15s; }
+
+  #mobile-vitals {
+    display: none;
+    position: fixed; left: 50%; bottom: 230px; transform: translateX(-50%);
+    width: min(220px, 58vw); padding: 8px 10px 7px; box-sizing: border-box;
+    color: #fff; background: rgba(8,12,18,.78); border: 1px solid rgba(255,255,255,.22);
+    border-radius: 10px; box-shadow: 0 5px 18px rgba(0,0,0,.32); z-index: 6;
+    font: 800 10px/1.1 Arial; letter-spacing: 1px; pointer-events: none;
+  }
+  #mobile-vitals .vitals-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #mobile-vitals .vitals-label { color: #aebed0; }
+  #mobile-vitals .vitals-value { color: #fff; font-size: 12px; letter-spacing: .5px; }
+  #mobile-health-track { height: 7px; margin: 5px 0 7px; overflow: hidden; border-radius: 5px; background: rgba(255,255,255,.16); }
+  #mobile-health-fill { width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#2faf4e,#5fe07a); transition: width .15s, background .15s; }
+  #mobile-ammo-label { max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #ffd24a; }
 
   #speed {
     position: absolute; right: 26px; bottom: 24px; font-size: 34px; font-weight: 800; font-style: italic;
@@ -90,13 +105,15 @@ Copy the following JS code and paste it into the source code of your page below 
   }
   #mm2 { font-size: 22px; font-weight: 700; color: #e8eef5; text-shadow: 2px 2px 0 #000; margin-top: 4px; }
 
-  /* touch devices: HUD rearranged around the on-screen controls */
+  /* touch devices: keep HUD readable above a small, intentional control set */
   body.touch #keysind { display: none; }
-  body.touch #hint { bottom: auto; top: 70px; font-size: 14px; max-width: 78vw; }
-  body.touch #bottomleft { transform: scale(0.66); transform-origin: bottom left; bottom: 170px; left: 12px; }
-  body.touch #weapon { right: 200px; bottom: 8px; font-size: 18px; }
-  body.touch #speed { right: 230px; bottom: 8px; font-size: 26px; }
-  body.touch #mission { left: 12px; top: 6px; padding: 6px 10px; min-width: 0; max-width: 150px; }
+  body.touch #mobile-vitals { display: block; }
+  body.touch #healthwrap { display: none; }
+  body.touch #hint { bottom: auto; top: 76px; font-size: 13px; max-width: 70vw; }
+  body.touch #bottomleft { transform: scale(0.72); transform-origin: bottom left; bottom: 142px; left: 10px; }
+  body.touch #weapon { right: 18px; bottom: 198px; font-size: 15px; }
+  body.touch #speed { right: 18px; bottom: 170px; font-size: 22px; }
+  body.touch #mission { left: 10px; top: 58px; padding: 6px 10px; min-width: 0; max-width: 156px; }
   body.touch #mtitle { font-size: 13px; }
   body.touch #mtext { font-size: 10px; }
   body.touch #mtimer { font-size: 16px; }
@@ -234,6 +251,12 @@ Copy the following JS code and paste it into the source code of your page below 
   </div>
   <div id="vignette"></div>
   <div id="damage"></div>
+
+  <div id="mobile-vitals" aria-label="Health and ammunition">
+    <div class="vitals-row"><span class="vitals-label">HEALTH</span><strong id="mobile-health-value" class="vitals-value">100</strong></div>
+    <div id="mobile-health-track"><div id="mobile-health-fill"></div></div>
+    <div class="vitals-row"><span id="mobile-ammo-label">PISTOL</span><strong id="mobile-ammo-value" class="vitals-value">∞</strong></div>
+  </div>
 
   <div id="start">
     <h1>OPEN CITY</h1>

@@ -1,8 +1,8 @@
 import { keys, pressed, mouse } from './input.js';
 
 // Touch controls for phones/tablets: a virtual joystick on the left drives
-// WASD, dragging the rest of the screen looks around, and buttons cover
-// web-swing, shooting, jumping and actions. Everything feeds the exact same
+// WASD, dragging the rest of the screen looks around, and a small set of buttons covers
+// the core actions. Everything feeds the exact same
 // keys/mouse state the keyboard uses, so every game system works untouched.
 
 // "Touch device" means touch is the PRIMARY pointer (phone/tablet).
@@ -59,13 +59,13 @@ export function initTouch() {
 
   // ---- virtual joystick (bottom-left) ----
   const pad = el(
-    'position:absolute;left:24px;bottom:32px;width:124px;height:124px;border-radius:50%;' +
+    'position:absolute;left:18px;bottom:22px;width:112px;height:112px;border-radius:50%;' +
     'background:rgba(20,26,36,0.4);border:2px solid rgba(255,255,255,0.25);' +
     'pointer-events:auto;touch-action:none;'
   );
   pad.id = 'joypad';
   const nub = el(
-    'position:absolute;left:50%;top:50%;width:52px;height:52px;border-radius:50%;' +
+    'position:absolute;left:50%;top:50%;width:46px;height:46px;border-radius:50%;' +
     'background:rgba(255,255,255,0.45);transform:translate(-50%,-50%);'
   );
   pad.appendChild(nub);
@@ -75,7 +75,7 @@ export function initTouch() {
   const stickOrigin = { x: 0, y: 0 };
 
   function setStick(dx, dy) {
-    const R = 48;
+    const R = 42;
     const len = Math.hypot(dx, dy) || 1;
     const cx = (Math.abs(dx) > len * 0.38 ? Math.sign(dx) : 0);
     const cy = (Math.abs(dy) > len * 0.38 ? Math.sign(dy) : 0);
@@ -84,7 +84,7 @@ export function initTouch() {
     keys['KeyA'] = cx < 0 && len > 14;
     keys['KeyD'] = cx > 0 && len > 14;
     // sprint when the stick is pushed to the rim
-    keys['ShiftLeft'] = len > 44 && !downHeld;
+    keys['ShiftLeft'] = len > 38 && !downHeld;
     const nx = Math.max(-R, Math.min(R, dx));
     const ny = Math.max(-R, Math.min(R, dy));
     nub.style.transform = `translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`;
@@ -169,43 +169,30 @@ export function initTouch() {
   const press = (k) => { pressed[k] = true; keys[k] = true; };
   const release = (k) => { keys[k] = false; };
 
-  // right-hand cluster
-  button('WEB', 'right:24px;bottom:96px;width:86px;height:86px;font-size:16px;',
+  // Primary right-hand cluster: web, fire, jump and helicopter descent.
+  button('WEB', 'right:18px;bottom:108px;width:76px;height:76px;font-size:15px;',
     () => { mouse.rdown = true; }, () => { mouse.rdown = false; }).id = 'btn-web';
-  button('FIRE', 'right:124px;bottom:40px;width:64px;height:64px;',
+  button('FIRE', 'right:108px;bottom:48px;width:60px;height:60px;',
     () => { mouse.down = true; }, () => { mouse.down = false; }).id = 'btn-fire';
-  button('JUMP', 'right:34px;bottom:12px;width:64px;height:64px;',
+  button('JUMP', 'right:18px;bottom:22px;width:60px;height:60px;',
     () => press('Space'), () => release('Space')).id = 'btn-jump';
-  button('▼', 'right:124px;bottom:120px;width:52px;height:52px;',
+  button('▼', 'right:108px;bottom:124px;width:48px;height:48px;',
     () => { downHeld = true; keys['ShiftLeft'] = true; },
     () => { downHeld = false; keys['ShiftLeft'] = false; });
-  // actions in an arc to the right of the joystick (the minimap sits above it)
-  button('E', 'left:170px;bottom:104px;width:56px;height:56px;font-size:16px;',
+  // Essential actions sit in a compact row above the joystick.
+  button('E', 'left:18px;bottom:158px;width:50px;height:50px;font-size:15px;',
     () => press('KeyE'), () => release('KeyE'));
-  button('Q', 'left:238px;bottom:128px;width:50px;height:50px;',
+  button('Q', 'left:76px;bottom:174px;width:46px;height:46px;',
     () => press('KeyQ'), () => release('KeyQ'));
-  button('R', 'left:300px;bottom:104px;width:44px;height:44px;',
-    () => press('KeyR'), () => release('KeyR'));
-  button('F', 'right:210px;bottom:80px;width:56px;height:56px;font-size:16px;',
+  button('F', 'left:132px;bottom:158px;width:50px;height:50px;font-size:15px;',
     () => press('KeyF'), () => release('KeyF')).id = 'btn-punch';
-  button('WPN', 'right:286px;bottom:36px;width:50px;height:50px;font-size:11px;',
+  button('WPN', 'left:190px;bottom:174px;width:46px;height:46px;font-size:10px;',
     () => press('KeyX'), () => release('KeyX')).id = 'btn-wpn'; // cycle weapons
-  // utilities below the stars, pulled left so they never touch the WEB cluster
-  button('II', 'right:170px;top:120px;width:42px;height:42px;',
+  // Only navigation utilities remain visible; low-priority tools stay keyboard/menu-only.
+  button('II', 'right:70px;top:82px;width:42px;height:42px;',
     () => press('KeyP'), () => release('KeyP'));
-  button('M', 'right:222px;top:120px;width:42px;height:42px;',
+  button('M', 'right:18px;top:82px;width:42px;height:42px;',
     () => press('KeyM'), () => release('KeyM'));
-  button('📸', 'right:274px;top:120px;width:42px;height:42px;font-size:18px;',
-    () => press('KeyG'), () => release('KeyG')); // snap a screenshot
-  // second utility row: jetpack toggle, REX attack, vigilante start
-  button('JET', 'right:170px;top:172px;width:42px;height:42px;font-size:10px;',
-    () => press('KeyJ'), () => release('KeyJ'));
-  button('REX', 'right:222px;top:172px;width:42px;height:42px;font-size:10px;',
-    () => press('KeyZ'), () => release('KeyZ'));
-  button('VIG', 'right:274px;top:172px;width:42px;height:42px;font-size:10px;',
-    () => press('KeyV'), () => release('KeyV'));
-  button('👑', 'right:326px;top:172px;width:42px;height:42px;font-size:16px;',
-    () => press('KeyL'), () => release('KeyL')); // the legend board
 
   // 1-4 digit row: appears only while standing at a kiosk (casino, wardrobe...)
   // sits below the relocated hint bar at the top of the screen

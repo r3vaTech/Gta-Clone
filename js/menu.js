@@ -129,19 +129,27 @@ export function openMenu(world) {
     `PACKAGES <b style="color:#fff">${st.tokens | 0}/20</b> · RIVALS BEATEN <b style="color:#fff">${st.rivals | 0}</b><br>` +
     `ACHIEVEMENTS UNLOCKED&nbsp;<b style="color:#fff">${ach}/${achTotal}</b>`;
   menuEl.style.display = 'flex';
+  const touchui = document.getElementById('touchui');
+  if (touchui) touchui.style.visibility = 'hidden';
 }
 
 export function closeMenu() {
   menuEl.style.display = 'none';
+  const touchui = document.getElementById('touchui');
+  if (touchui) touchui.style.visibility = 'visible';
 }
 
 export function openMap(world) {
   mapEl.style.display = 'flex';
+  const touchui = document.getElementById('touchui');
+  if (touchui) touchui.style.visibility = 'hidden';
   drawBigMap(world);
 }
 
 export function closeMap() {
   mapEl.style.display = 'none';
+  const touchui = document.getElementById('touchui');
+  if (touchui) touchui.style.visibility = 'visible';
 }
 
 export function drawBigMap(world) {

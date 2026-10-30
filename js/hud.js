@@ -10,6 +10,10 @@ export function initHUD() {
     clock: document.getElementById('clock'),
     stars: document.getElementById('stars').children,
     health: document.getElementById('health'),
+    mobileHealthFill: document.getElementById('mobile-health-fill'),
+    mobileHealthValue: document.getElementById('mobile-health-value'),
+    mobileAmmoLabel: document.getElementById('mobile-ammo-label'),
+    mobileAmmoValue: document.getElementById('mobile-ammo-value'),
     speed: document.getElementById('speed'),
     weapon: document.getElementById('weapon'),
     hint: document.getElementById('hint'),
@@ -124,10 +128,15 @@ export function updateHUD(world) {
   }
 
   const hp = Math.max(0, player.health);
-  els.health.style.width = Math.min(100, (hp / (world.maxHealth || 100)) * 100) + '%';
-  els.health.style.background = hp > 40
+  const hpPct = Math.min(100, (hp / (world.maxHealth || 100)) * 100);
+  const hpColor = hp > 40
     ? 'linear-gradient(90deg,#2faf4e,#5fe07a)'
     : 'linear-gradient(90deg,#b03030,#e05f5f)';
+  els.health.style.width = hpPct + '%';
+  els.health.style.background = hpColor;
+  els.mobileHealthFill.style.width = hpPct + '%';
+  els.mobileHealthFill.style.background = hpColor;
+  els.mobileHealthValue.textContent = Math.round(hp);
 
   if (player.inCar || player.inHeli || player.inBoat) {
     const v = player.inCar || player.inHeli || player.inBoat;
@@ -137,11 +146,16 @@ export function updateHUD(world) {
     els.speed.innerHTML = Math.round(v.vel.length() * 2.4) + ' <small>MPH</small>' + nitro;
     els.crosshair.style.display = 'none';
     els.weapon.style.display = 'none';
+    els.mobileAmmoLabel.textContent = 'DRIVE MODE';
+    els.mobileAmmoValue.textContent = '—';
   } else {
     els.speed.style.display = 'none';
     els.crosshair.style.display = 'block';
     els.weapon.style.display = 'block';
     els.weapon.textContent = world.weaponName || '';
+    const weaponParts = (world.weaponName || 'PISTOL').split(' · ');
+    els.mobileAmmoLabel.textContent = weaponParts[0];
+    els.mobileAmmoValue.textContent = weaponParts[1] ?? '∞';
   }
 
   // live key indicator — lights up when the game receives the key
