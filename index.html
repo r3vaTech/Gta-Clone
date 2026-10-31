@@ -278,6 +278,82 @@
     #start .feat { font-size: 11.5px; padding: 5px 0; }
     #start .tab { padding: 6px 12px; font-size: 12px; }
   }
+
+  /* cinematic THE MAINLAND presentation pass */
+  #loading-screen {
+    position: fixed; inset: 0; z-index: 120; overflow: hidden; color: #fff;
+    background: #070707 url('mainland-loading.png') center / cover no-repeat;
+    transition: opacity .7s ease, visibility .7s ease;
+  }
+  #loading-screen::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,5,8,.24), rgba(4,5,8,.04) 38%, rgba(4,5,8,.86) 100%); }
+  #loading-screen::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(244,200,74,.18), inset 0 -120px 180px rgba(0,0,0,.38); pointer-events: none; }
+  #loading-screen.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loading-top, .loading-bottom { position: absolute; left: clamp(18px, 5vw, 74px); right: clamp(18px, 5vw, 74px); z-index: 1; }
+  .loading-top { top: clamp(18px, 4vw, 48px); display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 800 10px Arial; letter-spacing: 2.4px; color: rgba(255,255,255,.8); }
+  .loading-top strong { color: #f4c84a; }
+  .loading-bottom { bottom: clamp(18px, 4vw, 44px); display: grid; grid-template-columns: minmax(210px, 1fr) minmax(280px, 1.7fr) auto; gap: clamp(18px, 4vw, 58px); align-items: end; }
+  .loading-tip { max-width: 340px; padding-left: 17px; border-left: 4px solid #f4c84a; color: rgba(255,255,255,.84); font: 600 12px/1.5 Arial; text-shadow: 0 2px 8px #000; }
+  .loading-tip b { display: block; margin-bottom: 5px; color: #f4c84a; font: 900 15px Arial; letter-spacing: 1px; }
+  .loading-progress { min-width: 0; }
+  .loading-progress .loading-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font: 900 clamp(16px, 2vw, 24px) Arial; letter-spacing: 1px; text-shadow: 0 2px 8px #000; }
+  .loading-progress .loading-label small { color: #f4c84a; font-size: 10px; letter-spacing: 2px; }
+  .loading-track { height: 12px; padding: 2px; overflow: hidden; border: 1px solid rgba(255,255,255,.75); border-radius: 99px; background: rgba(0,0,0,.48); box-shadow: 0 4px 18px rgba(0,0,0,.38); }
+  #loading-progress { display: block; width: 8%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f4c84a, #ffc21c); box-shadow: 0 0 14px rgba(244,200,74,.7); transition: width .28s ease; }
+  .loading-foot { align-self: end; color: rgba(255,255,255,.72); font: 800 9px Arial; letter-spacing: 3px; white-space: nowrap; }
+
+  body:not(.boot-complete) #start { opacity: 0; visibility: hidden; pointer-events: none; }
+  body.boot-complete #start { opacity: 1; visibility: visible; transition: opacity .5s ease; }
+  #start { background: radial-gradient(circle at 20% 12%, rgba(198,149,50,.14), transparent 30%), linear-gradient(135deg, #090a0d 0%, #111317 55%, #08090b 100%); align-items: stretch; justify-content: center; text-align: left; padding: clamp(18px, 4vw, 54px); }
+  #start::before { content: ''; position: absolute; inset: 18px; border: 1px solid rgba(244,200,74,.16); pointer-events: none; }
+  #start > * { position: relative; z-index: 1; }
+  #brand-emblem { width: min(520px, 72vw); max-height: 174px; margin: 0; object-position: left center; filter: drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+  #start .tag { margin: 2px 0 22px; color: #f4c84a; font: 800 10px Arial; letter-spacing: 3px; text-transform: uppercase; }
+  #start > div[style*="fictionalized"] { max-width: 520px !important; margin: -10px 0 18px !important; color: #aab1b8 !important; font-size: 13px !important; }
+  #start #charpick, #start #lifecreator, #start .tabs, #start .panel, #start #playbtn { align-self: flex-start; }
+  #charpick { width: min(690px, 92vw); }
+  #charpick .chartitle, #lifecreator .creator-title { color: #c89532; font-size: 10px; letter-spacing: 2.4px; }
+  #charrow { justify-content: flex-start; flex-wrap: wrap; }
+  .charcard { width: 136px; padding: 11px; border-radius: 5px; background: rgba(12,14,17,.88); border: 1px solid rgba(255,255,255,.15); }
+  .charcard.sel { border-color: #f4c84a; box-shadow: inset 0 -3px 0 #f4c84a, 0 9px 22px rgba(0,0,0,.3); background: rgba(244,200,74,.08); }
+  #lifecreator { width: min(690px, 92vw); margin: 15px 0 5px; padding: 14px 15px; border-color: rgba(200,149,50,.35); border-radius: 5px; background: rgba(5,7,9,.7); }
+  #lifecreator select { background: #17191d; border-color: rgba(255,255,255,.18); border-radius: 3px; }
+  #playbtn { margin: 12px 0 16px; padding: 15px 34px; border-radius: 3px; font-size: 20px; letter-spacing: 2px; background: #f4c84a; box-shadow: 0 8px 24px rgba(244,200,74,.22); }
+  #playbtn:hover { background: #ffd76a; transform: translateY(-2px); }
+  #start .tabs { border-bottom: 1px solid rgba(255,255,255,.12); }
+  #start .tab { border-radius: 0; color: #89919a; background: transparent; }
+  #start .tab.active { color: #f4c84a; border-bottom-color: #f4c84a; }
+  #start .panel { max-width: 700px; padding: 13px 0; background: transparent; border: 0; }
+  #start .ctl, #start .feat { color: #aab1b8; }
+  #start .k { color: #f4c84a; border-color: rgba(244,200,74,.38); background: rgba(244,200,74,.07); }
+
+  #hud { font-family: Arial, sans-serif; }
+  #topright, #status-right, #bottom-dock { border-color: rgba(244,200,74,.3); background: rgba(8,9,11,.82); backdrop-filter: blur(10px); }
+  #money { color: #f4c84a; border-color: rgba(244,200,74,.36); }
+  #money::before { color: #a5a9ae; }
+  #bottomleft { border-color: rgba(244,200,74,.6); box-shadow: 0 5px 22px rgba(0,0,0,.52), 0 0 0 1px rgba(244,200,74,.18); }
+  #life-card { border-color: rgba(244,200,74,.4); border-left-color: #f4c84a; background: rgba(8,9,11,.84); backdrop-filter: blur(10px); }
+  #life-card .life-route i, #life-card .life-route span:last-child { color: #f4c84a; }
+  #life-card .life-progress span { background: linear-gradient(90deg,#f4c84a,#d6a52e); }
+  #bottom-dock button .dock-icon { color: #f4c84a; }
+
+  @media (max-width: 700px), (max-height: 620px) {
+    .loading-top { font-size: 8px; letter-spacing: 1.2px; }
+    .loading-bottom { display: block; }
+    .loading-tip { display: none; }
+    .loading-progress { margin-bottom: 12px; }
+    .loading-foot { text-align: right; font-size: 7px; letter-spacing: 1.6px; }
+    #start { padding: 28px 18px 20px; overflow-y: auto; }
+    #start::before { inset: 9px; }
+    #brand-emblem { width: min(420px, 92vw); max-height: 120px; }
+    #start .tag { margin-bottom: 13px; font-size: 8px; }
+    #start > div[style*="fictionalized"] { font-size: 11px !important; line-height: 1.4 !important; }
+    .charcard { width: 100px; padding: 8px; }
+    .charcard .cname { font-size: 12px; }
+    .charcard .ctag { font-size: 8px; }
+    #lifecreator { margin-top: 10px; }
+    #lifecreator .creator-grid { gap: 6px; }
+    #playbtn { font-size: 17px; padding: 12px 30px; }
+  }
 </style>
 <script type="importmap">
 {
@@ -289,6 +365,14 @@
 </script>
 </head>
 <body>
+  <div id="loading-screen" aria-live="polite">
+    <div class="loading-top"><strong>THE MAINLAND</strong><span>OS​HODI DISTRICT // <strong>BUILD 0.2</strong></span></div>
+    <div class="loading-bottom">
+      <div class="loading-tip"><b>GAME TIP</b>Build good relationships in the city. A strong network can open doors, create opportunities, and keep you safe.</div>
+      <div class="loading-progress"><div class="loading-label"><span id="loading-status">Waking the district...</span><small id="loading-percent">8%</small></div><div class="loading-track"><i id="loading-progress"></i></div></div>
+      <div class="loading-foot">A NIGERIAN URBAN LIFE SIMULATOR</div>
+    </div>
+  </div>
   <div id="hud">
     <div id="topright">
       <div id="money">$0</div>

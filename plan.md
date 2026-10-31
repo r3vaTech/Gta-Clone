@@ -39,17 +39,19 @@ The first milestone should make the concept legible with a small but complete lo
 
 ## Visual and interaction direction
 
-**Design movement:** grounded Lagos street realism with warm late-afternoon light, humid haze, layered signage, worn materials, lively pedestrian density, and restrained UI overlays.
+**Design movement:** a cinematic Lagos street-life title treatment carried from the supplied loading reference into the complete game shell: warm late-afternoon light, humid haze, layered signage, worn materials, transport yellow, graphite framing, and restrained but confident UI overlays.
 
-**Core principles:** recognizable everyday detail; social readability over spectacle; color and sound communicate place; consequences remain visible in the environment.
+**Core principles:** recognizable everyday detail; social readability over spectacle; the loading/start screen establishes place before play; color and sound communicate place; consequences remain visible in the environment.
 
-**Color philosophy:** sun-baked ochres, concrete gray, faded teal, market greens, transport yellows, and selective red/orange alerts. Bright color belongs to commerce, transport, and social signals rather than fantasy effects.
+**Color philosophy:** black and graphite create a cinematic frame, warm gold carries identity and action, transport yellow signals movement and opportunity, faded teal anchors navigation, and selective red/orange alerts communicate risk. Bright color belongs to commerce, transport, and social signals rather than fantasy effects.
 
-**Layout paradigm:** a diegetic city-first view with compact edge HUDs. The player should read the street, nearby people, and current social/economic pressure before reading menus.
+**Layout paradigm:** a cinematic loading cover transitions into a split start command deck, then collapses into a diegetic city-first view with compact edge HUDs. The player should read the street, nearby people, and current social/economic pressure before reading menus.
 
-**Signature elements:** a route-and-routine clock, rumor bubbles/whispers that surface near people, and compact wallet/rent/reputation cards.
+**Signature elements:** a full-bleed loading image with real boot progress; a bold gold brush-stroke/underline motif; a route-and-routine clock; rumor bubbles/whispers that surface near people; and compact wallet/rent/reputation cards.
 
-**Typography:** use the existing readable sans-serif system for gameplay, with heavier condensed labels only for transport, job, and alert states.
+**Typography:** use the existing readable sans-serif system for gameplay, with heavy condensed labels for transport, job, and alert states and a high-contrast italic display treatment for the title, slogan, and loading status.
+
+**Loading behavior:** show the supplied `1661108F-741F-433B-B938-11DCACC24240.png` as the cinematic boot artwork, overlay a live progress/status strip, then fade into the interactive start deck. The start deck keeps character creation and first-life choices, but presents them as a deliberate new-life setup instead of a legacy prototype menu. Desktop and mobile use the same hierarchy with responsive stacking.
 
 ## Project structure
 

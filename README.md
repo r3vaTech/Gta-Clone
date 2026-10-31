@@ -21,6 +21,8 @@ The active development branch is `our-build`. The current build focuses on:
 - A new Mainland visual direction anchored by the supplied cinematic emblem: graphite buildings, black asphalt, warm gold civic/commercial details, controlled teal accents, and sidewalk-safe landmark placement.
 - An authored starter corridor with named low-rise frontages, drainage grates, hazard curb accents, utility poles, a sheltered bus stop, and deliberate property-side placement.
 - Dedicated yellow-and-green Danfo minibuses with open passenger-side doors, route signage, wheel animation, lane movement, traffic spacing, and bus-stop pauses.
+- A cinematic boot sequence using the supplied Lagos/Oshodi loading artwork, live district-status progress, and a fade into the interactive character/life setup deck.
+- A unified black/graphite/gold presentation from loading screen through gameplay HUD, with gold action emphasis, transport-yellow identity, and tighter responsive mobile hierarchy.
 
 The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 
@@ -131,6 +133,7 @@ js/city.js       Roads, sidewalks, buildings, intersections, street props
 js/car.js        Vehicle meshes, driving physics, wheels, lights, collisions
 js/npc.js        Pedestrians, traffic spawning, traffic behavior
 js/danfo.js      Authored Danfo minibuses and starter-corridor transit behavior
+mainland-loading.png  Supplied cinematic Lagos/Oshodi loading artwork
 js/mall.js       Galleria landmark, door, interior, and interactions
 js/buildings.js  Generic enterable residential/shop/office interiors
 js/hud.js        HUD, minimap, mobile navigation, and status panels

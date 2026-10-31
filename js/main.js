@@ -2633,6 +2633,32 @@ function respawn() {
 
 // ---------- start screen / pointer lock ----------
 const startEl = document.getElementById('start');
+const loadingEl = document.getElementById('loading-screen');
+const loadingBarEl = document.getElementById('loading-progress');
+const loadingPercentEl = document.getElementById('loading-percent');
+const loadingStatusEl = document.getElementById('loading-status');
+const bootSteps = [
+  [18, 'Waking the district...'],
+  [34, 'Routing the danfos...'],
+  [52, 'Opening the market roads...'],
+  [68, 'Calling the first shift...'],
+  [84, 'Bringing your people online...'],
+  [100, 'Mainland is ready.'],
+];
+let bootStep = 0;
+const bootTimer = window.setInterval(() => {
+  const [progress, status] = bootSteps[Math.min(bootStep++, bootSteps.length - 1)];
+  if (loadingBarEl) loadingBarEl.style.width = `${progress}%`;
+  if (loadingPercentEl) loadingPercentEl.textContent = `${progress}%`;
+  if (loadingStatusEl) loadingStatusEl.textContent = status;
+  if (progress >= 100) {
+    window.clearInterval(bootTimer);
+    window.setTimeout(() => {
+      document.body.classList.add('boot-complete');
+      loadingEl?.classList.add('is-hidden');
+    }, 480);
+  }
+}, 230);
 const LIFE_BACKGROUNDS = {
   hustler: { label: 'Street Hustler', cash: 250, rent: 300, brief: 'You know the shortcuts, the people, and how to turn a small opportunity into today\'s money.' },
   trader: { label: 'Market Trader', cash: 450, rent: 400, brief: 'You start with a little more stock money and a sharper eye for prices, favours, and good foot traffic.' },

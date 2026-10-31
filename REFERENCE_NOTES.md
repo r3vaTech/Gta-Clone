@@ -34,6 +34,8 @@ The latest authored-corridor pass adapts the references’ strongest world-build
 
 The starter-job implementation remains native to this repository. It does not copy the React/Vite application or its assets. Future selected adaptations are vehicle profiles/upgrades, named map destinations, a collapsible quick-action surface, and focused smoke checks.
 
+The supplied cinematic loading artwork now anchors the complete presentation rather than only the start logo: a real boot progress strip and district-status copy transition into a black/graphite/gold start deck, while the gameplay HUD carries the same gold action emphasis and transport-yellow identity.
+
 ## Not copied
 
 The source repositories have different runtime architectures and feature boundaries. Their React components, bundler configuration, map data, OSM snapshot, assets, and multiplayer/modal claims are not copied into this build. Concepts are adapted only when they fit the existing plain ES-module game and THE MAINLAND roadmap.
