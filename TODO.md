@@ -4,6 +4,7 @@
 - Redesign the whole presentation from loading screen to gameplay: use the supplied cinematic Lagos/Oshodi image as the boot artwork, show real loading progress/status, transition into a deliberate THE MAINLAND start deck, and carry the black/graphite/gold/transport-yellow visual language into the in-game HUD.
 - Keep the project as a game build and do not convert or publish it as a permanent website.
 - Redesign the visual identity around the supplied THE MAINLAND emblem: black, graphite, warm gold, and controlled teal accents rather than the inherited prototype palette.
+- Redesign the gameplay UI around the supplied reference: branded top-left corner, first-day mission card, top-right player level/XP/cash/profile card, readable district minimap with district label, bottom Inventory/Map/Jobs/Skills/Social/Settings dock, and a bottom-right movement/interact control legend.
 - Enforce spatial zones: vehicles on asphalt, pedestrians and lamps on sidewalks, doors on property thresholds, and civic/commercial landmarks inside deliberate plazas.
 - Improve the road system first: lane readability, intersections, sidewalks, traffic flow, and street-scale visual detail.
 - Improve the car system second: believable proportions, wheel/road contact, lighting, braking, acceleration, steering, and traffic behavior.

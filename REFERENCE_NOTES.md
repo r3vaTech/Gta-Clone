@@ -36,6 +36,8 @@ The starter-job implementation remains native to this repository. It does not co
 
 The supplied cinematic loading artwork now anchors the complete presentation rather than only the start logo: a real boot progress strip and district-status copy transition into a black/graphite/gold start deck, while the gameplay HUD carries the same gold action emphasis and transport-yellow identity.
 
+The supplied gameplay reference now informs the active HUD hierarchy: a small branded corner, first-day mission brief, profile/level/XP/cash card, round district minimap with district chip, bottom navigation dock, and a right-side control legend. The structure is implemented in the existing plain HTML/CSS/ES-module shell and remains responsive on touch devices.
+
 ## Not copied
 
 The source repositories have different runtime architectures and feature boundaries. Their React components, bundler configuration, map data, OSM snapshot, assets, and multiplayer/modal claims are not copied into this build. Concepts are adapted only when they fit the existing plain ES-module game and THE MAINLAND roadmap.

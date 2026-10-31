@@ -8,6 +8,18 @@ export function initHUD() {
   els = {
     money: document.getElementById('money'),
     clock: document.getElementById('clock'),
+    statusAvatar: document.getElementById('status-avatar'),
+    statusLevel: document.getElementById('status-level'),
+    statusName: document.getElementById('status-name'),
+    statusXp: document.getElementById('status-xp'),
+    statusXpFill: document.getElementById('status-xp-fill'),
+    statusCash: document.getElementById('status-cash'),
+    statusAvatar: document.getElementById('status-avatar'),
+    statusLevel: document.getElementById('status-level'),
+    statusName: document.getElementById('status-name'),
+    statusXp: document.getElementById('status-xp'),
+    statusXpFill: document.getElementById('status-xp-fill'),
+    statusCash: document.getElementById('status-cash'),
     stars: document.getElementById('stars').children,
     health: document.getElementById('health'),
     mobileHealthValue: document.getElementById('mobile-health-value'),
@@ -144,6 +156,13 @@ export function updateHUD(world) {
   const { player } = world;
 
   els.money.textContent = '$' + world.money;
+  if (els.statusCash) els.statusCash.textContent = '₦' + Math.max(0, world.money).toLocaleString();
+  if (els.statusLevel) els.statusLevel.textContent = `LV. ${world.level || 1}`;
+  if (els.statusName) els.statusName.textContent = (world.charKey || 'MAINLANDER').replace(/[-_]/g, ' ').toUpperCase();
+  if (els.statusAvatar) els.statusAvatar.textContent = (world.charKey || 'M').slice(0, 1).toUpperCase();
+  const xpIntoLevel = Math.max(0, (world.xp || 0) % 1000);
+  if (els.statusXp) els.statusXp.textContent = `${xpIntoLevel.toLocaleString()} / 1,000`;
+  if (els.statusXpFill) els.statusXpFill.style.width = `${Math.min(100, xpIntoLevel / 10)}%`;
 
   const hh = Math.floor(world.clock);
   const mm = Math.floor((world.clock % 1) * 60);

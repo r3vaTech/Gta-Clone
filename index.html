@@ -354,6 +354,68 @@
     #lifecreator .creator-grid { gap: 6px; }
     #playbtn { font-size: 17px; padding: 12px 30px; }
   }
+
+  /* gameplay HUD redesign: reference-style information hierarchy */
+  #brand-corner { position: absolute; left: 24px; top: 18px; width: 180px; pointer-events: none; }
+  #brand-corner img { display: block; width: 165px; height: auto; object-fit: contain; object-position: left center; filter: drop-shadow(0 5px 7px rgba(0,0,0,.7)); }
+  #brand-corner span { display: block; margin-top: 2px; color: #f4c84a; font: 900 9px Arial; letter-spacing: 2px; text-shadow: 0 2px 4px #000; }
+  #topright { display: none; }
+  #status-right { top: 18px; right: 24px; width: 320px; padding: 12px 14px; border-radius: 0 0 0 18px; border: 0; border-left: 1px solid rgba(244,200,74,.38); border-bottom: 1px solid rgba(244,200,74,.38); background: rgba(12,13,16,.86); box-shadow: 0 10px 30px rgba(0,0,0,.38); backdrop-filter: blur(12px); }
+  .status-player-head { display: flex; align-items: center; gap: 10px; }
+  #status-avatar { width: 58px; height: 58px; display: grid; place-items: center; flex: 0 0 auto; border: 2px solid #f4c84a; border-radius: 50%; color: #f4c84a; background: radial-gradient(circle at 40% 32%, #936b45, #202125 55%, #0e0f11); box-shadow: 0 0 0 3px rgba(244,200,74,.13); font: 900 25px Arial; }
+  .status-player-info { min-width: 0; flex: 1; }
+  .status-player-info > div:first-child { display: flex; align-items: baseline; gap: 8px; }
+  #status-level { color: #fff; font: 900 17px Arial; }
+  #status-name { overflow: hidden; color: #aeb3b8; font: 800 9px Arial; letter-spacing: 1.3px; text-overflow: ellipsis; white-space: nowrap; }
+  .status-xpbar { height: 7px; margin-top: 8px; overflow: hidden; border-radius: 99px; background: #35373a; }
+  #status-xp-fill { display: block; width: 9%; height: 100%; border-radius: inherit; background: #f4c84a; transition: width .25s ease; }
+  .status-xp-label { display: flex; justify-content: space-between; margin-top: 4px; color: #90969d; font: 800 8px Arial; letter-spacing: .7px; }
+  .status-icons { display: flex; align-self: flex-start; gap: 12px; color: #f7f7f5; font-size: 17px; }
+  .status-icons span:first-child { color: #f4c84a; font-size: 12px; }
+  .status-cash { display: flex; align-items: center; gap: 7px; margin: 12px 0 10px 68px; color: #f3f4ef; font: 900 15px Arial; }
+  .status-cash span { color: #78bd5a; font-size: 17px; }
+  #status-right .status-heading { padding-top: 8px; border-top: 1px solid rgba(255,255,255,.09); }
+  #status-right .status-bar { margin-top: 6px; height: 5px; }
+  #status-right .status-footer { margin-top: 7px; }
+  #bottomleft { left: 26px; right: auto; top: auto; bottom: 56px; width: 214px; height: 214px; padding: 8px; border-radius: 50%; border: 2px solid rgba(255,255,255,.65); background: rgba(12,14,17,.9); }
+  #minimap { width: 194px; height: 194px; }
+  #minimapTitle { top: 13px; font-size: 8px; letter-spacing: 2.5px; }
+  #district-chip { position: absolute; left: 49px; bottom: 20px; z-index: 2; padding: 6px 18px; color: #fff; background: rgba(12,13,16,.9); border: 1px solid rgba(244,200,74,.55); border-radius: 5px; box-shadow: 0 5px 14px rgba(0,0,0,.35); font: 900 11px Arial; letter-spacing: .7px; pointer-events: none; }
+  #life-card { left: 24px; top: 145px; width: 310px; padding: 13px 15px; border-radius: 0 8px 8px 0; border-left-width: 4px; background: rgba(12,13,16,.87); box-shadow: 0 9px 24px rgba(0,0,0,.38); }
+  #life-card .life-kicker { color: #f4c84a; }
+  #life-card .life-title { font-size: 18px; }
+  #life-card .life-route { margin-top: 9px; font-size: 11px; }
+  #controls-card { position: absolute; right: 24px; bottom: 30px; display: grid; grid-template-columns: repeat(2, auto); gap: 6px 14px; padding: 10px 12px; color: #e7e9e6; background: rgba(12,13,16,.84); border: 1px solid rgba(255,255,255,.12); border-radius: 6px; box-shadow: 0 7px 18px rgba(0,0,0,.32); font: 800 10px Arial; pointer-events: none; }
+  #controls-card div { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+  #controls-card b { min-width: 37px; padding: 4px 5px; color: #fff; background: rgba(255,255,255,.12); border-radius: 3px; text-align: center; font-size: 9px; }
+  #controls-card span { color: #c3c8ca; }
+  #bottom-dock { left: 50%; bottom: 19px; max-width: min(52vw, 720px); gap: 8px; padding: 7px 9px; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; background: rgba(12,13,16,.9); box-shadow: 0 10px 28px rgba(0,0,0,.42); }
+  #bottom-dock button { min-width: 76px; height: 58px; padding: 5px 9px; border-color: rgba(255,255,255,.12); border-radius: 8px; background: rgba(33,35,39,.88); font-size: 9px; }
+  #bottom-dock button .dock-icon { margin-bottom: 4px; color: #f4f4f0; font-size: 20px; }
+  #bottom-dock button:hover, #bottom-dock button:focus-visible { color: #111; background: #f4c84a; border-color: #f4c84a; }
+  #bottom-dock button:hover .dock-icon, #bottom-dock button:focus-visible .dock-icon { color: #111; }
+  #dock-toggle { display: none; }
+  @media (max-width: 700px), (max-height: 620px) {
+    #brand-corner { left: 10px; top: 8px; width: 115px; }
+    #brand-corner img { width: 112px; }
+    #brand-corner span { font-size: 6px; letter-spacing: 1.1px; }
+    #status-right { top: 8px; right: 8px; width: 215px; padding: 8px 9px; border-radius: 0 0 0 12px; transform: none; }
+    #status-avatar { width: 39px; height: 39px; font-size: 18px; }
+    #status-level { font-size: 12px; }
+    .status-icons { gap: 7px; font-size: 13px; }
+    .status-cash { margin: 8px 0 5px 49px; font-size: 11px; }
+    #status-right .status-heading, #status-right .status-bar, #status-right .status-footer { display: none; }
+    #life-card { left: 10px; top: 106px; width: 190px; }
+    #life-card .life-title { font-size: 13px; }
+    #bottomleft { left: 8px; bottom: 92px; width: 142px; height: 142px; padding: 5px; }
+    #minimap { width: 132px; height: 132px; }
+    #district-chip { left: 18px; bottom: 66px; padding: 4px 9px; font-size: 8px; }
+    #controls-card { right: 8px; bottom: 95px; gap: 4px 8px; padding: 7px; font-size: 8px; }
+    #controls-card b { min-width: 27px; padding: 3px; font-size: 7px; }
+    #bottom-dock { left: 50%; bottom: 8px; max-width: calc(100vw - 16px); gap: 3px; padding: 4px; }
+    #bottom-dock button { min-width: 47px; height: 44px; padding: 3px 4px; font-size: 7px; }
+    #bottom-dock button .dock-icon { font-size: 15px; }
+  }
 </style>
 <script type="importmap">
 {
@@ -374,12 +436,19 @@
     </div>
   </div>
   <div id="hud">
+    <div id="brand-corner"><img src="mainland-emblem.png" alt="THE MAINLAND"><span>OSHODI DISTRICT</span></div>
     <div id="topright">
       <div id="money">$0</div>
       <div id="clock">10:00</div>
       <div id="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
     </div>
     <div id="status-right">
+      <div class="status-player-head">
+        <div id="status-avatar">M</div>
+        <div class="status-player-info"><div><strong id="status-level">LV. 1</strong><span id="status-name">MAINLANDER</span></div><div class="status-xpbar"><span id="status-xp-fill"></span></div><div class="status-xp-label"><span>XP</span><span id="status-xp">0 / 1,000</span></div></div>
+        <div class="status-icons" aria-hidden="true"><span>●</span><span>✉</span><span>⚙</span></div>
+      </div>
+      <div class="status-cash"><span>◉</span><strong id="status-cash">₦0</strong></div>
       <div class="status-heading"><span>PLAYER VITALS</span><strong>ACTIVE</strong></div>
       <div class="status-bar"><div id="health"></div></div>
       <div class="status-footer"><span>HEALTH</span><div id="weapon">PISTOL</div></div>
@@ -388,6 +457,7 @@
       <canvas id="minimap" width="186" height="186"></canvas>
       <div id="minimapTitle">MAINLAND MAP</div>
     </div>
+    <div id="district-chip">OSHODI DISTRICT</div>
     <div id="speed">0 <small>MPH</small></div>
     <div id="hint"></div>
     <div id="keysind">
@@ -413,13 +483,15 @@
       <div class="life-progress"><span id="life-progress-bar"></span></div>
       <div class="life-meta"><span id="life-step">READY TO START</span><strong id="life-reward" class="life-reward">$250</strong></div>
     </div>
+    <div id="controls-card" aria-label="Keyboard controls"><div><b>W A S D</b><span>Move</span></div><div><b>SPACE</b><span>Jump</span></div><div><b>E</b><span>Interact</span></div><div><b>TAB</b><span>Inventory</span></div></div>
     <nav id="bottom-dock" aria-label="Quick actions">
       <button id="dock-toggle" type="button" aria-label="Collapse quick actions"><span class="dock-icon">⌄</span>DOCK</button>
-      <button type="button" data-hotkey="KeyM"><span class="dock-icon">⌖</span>MAP</button>
-      <button type="button" data-hotkey="KeyE"><span class="dock-icon">◈</span>WORK</button>
-      <button type="button" data-hotkey="KeyV"><span class="dock-icon">◉</span>CAMERA</button>
-      <button type="button" data-hotkey="KeyR"><span class="dock-icon">♫</span>RADIO</button>
-      <button type="button" data-hotkey="KeyP"><span class="dock-icon">☰</span>MENU</button>
+      <button type="button" data-hotkey="KeyI"><span class="dock-icon">▣</span>INVENTORY</button>
+      <button type="button" data-hotkey="KeyM"><span class="dock-icon">●</span>MAP</button>
+      <button type="button" data-hotkey="KeyE"><span class="dock-icon">▤</span>JOBS</button>
+      <button type="button" data-hotkey="KeyL"><span class="dock-icon">★</span>SKILLS</button>
+      <button type="button" data-hotkey="KeyO"><span class="dock-icon">♟</span>SOCIAL</button>
+      <button type="button" data-hotkey="KeyP"><span class="dock-icon">⚙</span>SETTINGS</button>
     </nav>
   </div>
   <div id="vignette"></div>
