@@ -32,6 +32,13 @@ export function initHUD() {
     mm1: document.getElementById('mm1'),
     mm2: document.getElementById('mm2'),
     damage: document.getElementById('damage'),
+    lifeCard: document.getElementById('life-card'),
+    lifeShift: document.getElementById('life-shift'),
+    lifeTitle: document.getElementById('life-title'),
+    lifeDestination: document.getElementById('life-destination'),
+    lifeProgress: document.getElementById('life-progress-bar'),
+    lifeStep: document.getElementById('life-step'),
+    lifeReward: document.getElementById('life-reward'),
   };
   mapCtx = els.minimap.getContext('2d');
 
@@ -172,6 +179,28 @@ export function updateHUD(world) {
     els.mtimer.style.color = m.timeLeft < 12 ? '#ff5a4a' : '#fff';
   } else {
     els.mission.style.display = 'none';
+  }
+  const job = world.mainlandJob;
+  if (job) {
+    const shift = String(job.completed + 1).padStart(2, '0');
+    els.lifeShift.textContent = `SHIFT ${shift}`;
+    els.lifeReward.textContent = '$' + (job.reward || 250);
+    if (job.phase === 'pickup') {
+      els.lifeTitle.textContent = 'Collect the package';
+      els.lifeDestination.textContent = 'PICKUP';
+      els.lifeStep.textContent = '01 / 02  COLLECT';
+      els.lifeProgress.style.width = '48%';
+    } else if (job.phase === 'deliver') {
+      els.lifeTitle.textContent = 'Finish the delivery';
+      els.lifeDestination.textContent = 'DROP-OFF';
+      els.lifeStep.textContent = '02 / 02  DELIVER';
+      els.lifeProgress.style.width = '78%';
+    } else {
+      els.lifeTitle.textContent = 'First starter shift';
+      els.lifeDestination.textContent = 'READY';
+      els.lifeStep.textContent = job.completed ? 'SHIFT COMPLETE  ·  RUN AGAIN' : 'READY TO START';
+      els.lifeProgress.style.width = job.completed ? '100%' : '8%';
+    }
   }
 
   // NPC speech bubbles (screen coords projected by main)

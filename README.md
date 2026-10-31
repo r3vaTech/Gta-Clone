@@ -17,6 +17,7 @@ The active development branch is `our-build`. The current build focuses on:
 - Enterable residential, shop, and office building shells with restricted actions by building type.
 - A grounded character creator with backgrounds, starter goals, and saved life-profile data.
 - A first Mainland starter shift: sign up at the Galleria, collect a package, deliver it across the district, receive a wallet payout, and save completed-shift progress.
+- A reference-inspired Mainland activity card that shows the current shift, route, step progress, and reward without covering navigation controls.
 
 The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 
@@ -131,6 +132,7 @@ js/buildings.js  Generic enterable residential/shop/office interiors
 js/hud.js        HUD, minimap, mobile navigation, and status panels
 TODO.md          Outcome-based product roadmap and current priorities
 plan.md          Conversion plan for THE MAINLAND
+REFERENCE_NOTES.md Reviewed ideas from the two related Mainland repositories
 ```
 
 ## Tech stack

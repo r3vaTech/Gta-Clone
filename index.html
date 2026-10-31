@@ -107,6 +107,24 @@
   }
   #mm2 { font-size: 22px; font-weight: 700; color: #e8eef5; text-shadow: 2px 2px 0 #000; margin-top: 4px; }
 
+  #life-card {
+    position: absolute; left: 20px; top: 112px; width: 238px; box-sizing: border-box;
+    padding: 11px 13px; color: #eef6f7; background: rgba(6,14,19,.86);
+    border: 1px solid rgba(73,208,192,.45); border-left: 4px solid #f4c84a;
+    border-radius: 0 12px 12px 0; box-shadow: 0 8px 24px rgba(0,0,0,.32);
+    font-family: Arial, sans-serif; pointer-events: none;
+  }
+  #life-card .life-kicker { display: flex; justify-content: space-between; color: #91a8b2; font-size: 9px; font-weight: 800; letter-spacing: 1.7px; }
+  #life-card .life-shift { color: #f4c84a; }
+  #life-card .life-title { margin-top: 4px; color: #fff; font-size: 16px; font-weight: 900; letter-spacing: .5px; }
+  #life-card .life-route { display: flex; align-items: center; gap: 7px; margin-top: 7px; color: #dce7e8; font-size: 10px; font-weight: 800; letter-spacing: .7px; }
+  #life-card .life-route i { color: #49d0c0; font-style: normal; font-size: 14px; }
+  #life-card .life-route span:last-child { color: #49d0c0; }
+  #life-card .life-progress { height: 4px; margin-top: 9px; overflow: hidden; border-radius: 4px; background: rgba(255,255,255,.12); }
+  #life-card .life-progress span { display: block; height: 100%; width: 8%; border-radius: inherit; background: linear-gradient(90deg,#f4c84a,#49d0c0); transition: width .2s ease; }
+  #life-card .life-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 7px; color: #9fb2c8; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+  #life-card .life-reward { color: #8ee7a7; font-size: 12px; letter-spacing: .3px; }
+
   /* touch devices: keep HUD readable above a small, intentional control set */
   body.touch #keysind { display: none; }
   body.touch #mobile-vitals { display: block; }
@@ -119,6 +137,10 @@
   body.touch #mtitle { font-size: 13px; }
   body.touch #mtext { font-size: 10px; }
   body.touch #mtimer { font-size: 16px; }
+  body.touch #life-card { left: 10px; top: 142px; width: 190px; padding: 8px 10px; }
+  body.touch #life-card .life-title { font-size: 13px; }
+  body.touch #life-card .life-route { font-size: 8px; gap: 4px; }
+  body.touch #life-card .life-meta { font-size: 8px; }
 
   #vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 4;
@@ -262,6 +284,13 @@
     <div id="missionmsg">
       <div id="mm1"></div>
       <div id="mm2"></div>
+    </div>
+    <div id="life-card" aria-label="Mainland activity status">
+      <div class="life-kicker"><span>MAINLAND HUSTLE</span><span id="life-shift" class="life-shift">SHIFT 01</span></div>
+      <div id="life-title" class="life-title">First starter shift</div>
+      <div class="life-route"><span>GALLERIA</span><i>→</i><span id="life-destination">READY</span></div>
+      <div class="life-progress"><span id="life-progress-bar"></span></div>
+      <div class="life-meta"><span id="life-step">READY TO START</span><strong id="life-reward" class="life-reward">$250</strong></div>
     </div>
   </div>
   <div id="vignette"></div>
