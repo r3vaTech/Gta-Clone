@@ -9,6 +9,8 @@
 - Improve the road system first: lane readability, intersections, sidewalks, traffic flow, and street-scale visual detail.
 - Improve the car system second: believable proportions, wheel/road contact, lighting, braking, acceleration, steering, and traffic behavior.
 - Add visible signalized intersections and make traffic respect red and amber phases.
+- Extend the authored Oshodi-inspired corridor with believable street assets: drainage channels, market umbrellas/stalls, overhead utility lines, roadside signage, and pedestrian-scale clutter kept inside sidewalk/property zones.
+- Upgrade Danfo minibuses with route variants, passenger-door boarding animation at bus stops, suspension/body motion, turn-indicator/brake-light cues, mirrors/roof details, and wheel animation that remains synchronized with movement.
 - Return to the Mainland life-loop outcomes after the road and car pass is accepted.
 
 ## 1. Rebrand and establish the fictionalized Mainland district

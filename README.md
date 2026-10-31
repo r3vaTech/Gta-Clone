@@ -24,6 +24,8 @@ The active development branch is `our-build`. The current build focuses on:
 - A cinematic boot sequence using the supplied Lagos/Oshodi loading artwork, live district-status progress, and a fade into the interactive character/life setup deck.
 - A unified black/graphite/gold presentation from loading screen through gameplay HUD, with gold action emphasis, transport-yellow identity, and tighter responsive mobile hierarchy.
 - A reference-led gameplay HUD with a branded corner, first-day mission brief, player profile/level/XP/cash card, district-labelled minimap, bottom Inventory/Map/Jobs/Skills/Social/Settings dock, and a compact movement/interact legend.
+- An expanded Oshodi-inspired corridor with open drains and covers, market umbrellas and stalls, utility wires, a route board, and pedestrian-scale frontage details kept off the asphalt.
+- Animated Danfo variants for Oshodi, Mile 2, Mushin, and Yaba with route boards, mirrors, roof rails, passenger-door boarding motion, suspension bounce, synchronized wheel spin, turn indicators, and brake-light cues.
 
 The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 

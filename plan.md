@@ -80,7 +80,7 @@ The first networked build should target bounded social rooms rather than a persi
 
 ## Asset direction
 
-Prefer procedural city geometry and the existing renderer during the first slice. Add distinctive 3D models only after the visual roles are approved: market stall kit, bus/interchange props, storefront signs, room interiors, police-post props, and player/avatar body presets. Avoid copying real brand marks or depicting identifiable private individuals.
+Prefer procedural city geometry and the existing renderer during the first slice. Extend authored zones inside that foundation with a market-stall kit, drainage and utility details, bus/interchange props, route signage, storefront signs, room interiors, police-post props, and player/avatar body presets. Danfo vehicles should use route variants and readable working animations before introducing higher-cost external models. Avoid copying real brand marks or depicting identifiable private individuals.
 
 ## First build success criteria
 

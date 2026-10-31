@@ -465,6 +465,66 @@ export function buildCity(scene) {
     scene.add(group);
     colliders.push({ x0: x - width / 2, x1: x + width / 2, z0: z - depth / 2, z1: z + depth / 2, h: height + 0.5 });
   }
+
+  // Street-scale Oshodi details: the corridor gets drainage, market shade,
+  // roadside signboards, and overhead utility lines. All of these live on the
+  // property-side sidewalk strip rather than in the traffic lanes.
+  const drainMat = new THREE.MeshStandardMaterial({ color: 0x272a2a, roughness: 0.98 });
+  const drain = new THREE.Mesh(new THREE.BoxGeometry(112, 0.12, 0.72), drainMat);
+  drain.position.set(0, 0.12, starterRouteZ + ROAD / 2 + 1.35);
+  scene.add(drain);
+  for (let x = -54; x <= 54; x += 7) {
+    const cover = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.06, 0.82), starterConcrete);
+    cover.position.set(x, 0.2, starterRouteZ + ROAD / 2 + 1.35);
+    scene.add(cover);
+  }
+  const umbrellaColors = [0xd6493f, 0xf0b93d, 0x2d6f61, 0xc26b32];
+  const stallXs = [-42, -24, -6, 36, 52];
+  for (let i = 0; i < stallXs.length; i++) {
+    const x = stallXs[i];
+    if (Math.abs(x - starterStops[0].x) < 8) continue;
+    const stall = new THREE.Group();
+    const table = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.65, 1.7), new THREE.MeshStandardMaterial({ color: 0x715039, roughness: 0.9 }));
+    table.position.y = 0.55;
+    stall.add(table);
+    const goods = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.18, 1.25), new THREE.MeshStandardMaterial({ color: [0xb86d2b, 0x5a8b45, 0xd8ba44][i % 3], roughness: 0.82 }));
+    goods.position.y = 0.93;
+    stall.add(goods);
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 2.9, 6), starterPoleMat);
+    pole.position.y = 1.75;
+    stall.add(pole);
+    const canopy = new THREE.Mesh(new THREE.ConeGeometry(2.25, 0.72, 8), new THREE.MeshStandardMaterial({ color: umbrellaColors[i % umbrellaColors.length], roughness: 0.78 }));
+    canopy.position.y = 3.12;
+    canopy.rotation.y = Math.PI / 8;
+    stall.add(canopy);
+    stall.position.set(x, 0.18, starterRouteZ + ROAD / 2 + 6.2);
+    scene.add(stall);
+  }
+  const signCanvas = document.createElement('canvas');
+  signCanvas.width = 384; signCanvas.height = 128;
+  const signCtx = signCanvas.getContext('2d');
+  signCtx.fillStyle = '#164f4b'; signCtx.fillRect(0, 0, 384, 128);
+  signCtx.strokeStyle = '#d9c77a'; signCtx.lineWidth = 6; signCtx.strokeRect(6, 6, 372, 116);
+  signCtx.fillStyle = '#f5ecd0'; signCtx.font = '900 30px Arial'; signCtx.textAlign = 'center'; signCtx.textBaseline = 'middle';
+  signCtx.fillText('OSHODI  /  MILE 2', 192, 53);
+  signCtx.font = '800 18px Arial'; signCtx.fillText('MARKET CORRIDOR', 192, 91);
+  const routeBoard = new THREE.Mesh(new THREE.PlaneGeometry(4.8, 1.6), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(signCanvas) }));
+  routeBoard.position.set(-47, 3.45, starterRouteZ + ROAD / 2 + 1.8);
+  routeBoard.rotation.y = Math.PI;
+  scene.add(routeBoard);
+  for (const x of [-48, -16, 16, 48]) {
+    for (let wire = 0; wire < 3; wire++) {
+      const points = [
+        new THREE.Vector3(x - 16, 5.75 + wire * 0.14, starterSidewalkZ + 1.8),
+        new THREE.Vector3(x - 8, 5.35 + wire * 0.14, starterSidewalkZ + 1.8),
+        new THREE.Vector3(x, 5.75 + wire * 0.14, starterSidewalkZ + 1.8),
+        new THREE.Vector3(x + 8, 5.35 + wire * 0.14, starterSidewalkZ + 1.8),
+        new THREE.Vector3(x + 16, 5.75 + wire * 0.14, starterSidewalkZ + 1.8),
+      ];
+      const cable = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color: 0x17191b, transparent: true, opacity: 0.82 }));
+      scene.add(cable);
+    }
+  }
   const starterCorridor = { routeZ: starterRouteZ, busStops: starterStops };
 
   // street lamps at intersections (warm sodium glow)

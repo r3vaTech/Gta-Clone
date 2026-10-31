@@ -14,16 +14,19 @@ function makeSignTexture(text) {
   return texture;
 }
 
-function createDanfo() {
+function createDanfo(routeText = 'OSHODI') {
   const group = new THREE.Group();
   const wheels = [];
+  const indicators = [];
+  const brakeLights = [];
   const yellow = new THREE.MeshStandardMaterial({ color: 0xd6a52e, roughness: 0.52, metalness: 0.16 });
   const green = new THREE.MeshStandardMaterial({ color: 0x24613e, roughness: 0.6, metalness: 0.08 });
   const black = new THREE.MeshStandardMaterial({ color: 0x121316, roughness: 0.82, metalness: 0.12 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x283e46, roughness: 0.16, metalness: 0.55, transparent: true, opacity: 0.88 });
   const chrome = new THREE.MeshStandardMaterial({ color: 0xb2b6ad, roughness: 0.22, metalness: 0.86 });
   const light = new THREE.MeshBasicMaterial({ color: 0xffe7a1 });
-  const red = new THREE.MeshBasicMaterial({ color: 0xd94b3f });
+  const brake = new THREE.MeshStandardMaterial({ color: 0x5a1e1a, emissive: 0x160403, roughness: 0.42 });
+  const indicator = new THREE.MeshStandardMaterial({ color: 0x5b2b16, emissive: 0x120600, roughness: 0.42 });
   const box = (size, pos, material) => {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
     mesh.position.set(...pos); mesh.castShadow = true; mesh.receiveShadow = true; group.add(mesh); return mesh;
@@ -45,10 +48,31 @@ function createDanfo() {
   box([2.08, 0.13, 0.15], [0, 1.0, 2.46], chrome);
   box([0.48, 0.24, 0.16], [-0.66, 1.08, 2.49], light);
   box([0.48, 0.24, 0.16], [0.66, 1.08, 2.49], light);
-  box([0.48, 0.24, 0.16], [-0.66, 1.08, -2.49], red);
-  box([0.48, 0.24, 0.16], [0.66, 1.08, -2.49], red);
+  brakeLights.push(box([0.48, 0.24, 0.16], [-0.66, 1.08, -2.49], brake));
+  brakeLights.push(box([0.48, 0.24, 0.16], [0.66, 1.08, -2.49], brake));
+  for (const x of [-0.82, 0.82]) {
+    indicators.push(box([0.2, 0.16, 0.12], [x, 1.1, 2.5], indicator));
+    indicators.push(box([0.2, 0.16, 0.12], [x, 1.1, -2.5], indicator));
+  }
 
-  const route = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.34), new THREE.MeshBasicMaterial({ map: makeSignTexture('OSHODI') }));
+  // Small practical details make the minibus read as a working vehicle rather
+  // than a yellow box: mirrors, roof rails, and an animated passenger door.
+  for (const side of [-1, 1]) {
+    box([0.1, 0.18, 0.38], [side * 1.23, 1.73, 1.72], chrome);
+    box([0.1, 0.18, 0.38], [side * 1.23, 1.73, 1.96], black);
+  }
+  box([0.1, 0.12, 3.8], [-0.78, 2.2, 0], black);
+  box([0.1, 0.12, 3.8], [0.78, 2.2, 0], black);
+  for (const z of [-1.35, 0, 1.35]) box([1.72, 0.08, 0.08], [0, 2.2, z], chrome);
+
+  const passengerDoor = new THREE.Group();
+  const doorPanel = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.92, 0.78), yellow);
+  doorPanel.castShadow = true;
+  passengerDoor.add(doorPanel);
+  passengerDoor.position.set(1.14, 1.35, 0.45);
+  group.add(passengerDoor);
+
+  const route = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.34), new THREE.MeshBasicMaterial({ map: makeSignTexture(routeText) }));
   route.position.set(0, 1.72, 2.34); route.rotation.y = Math.PI; group.add(route);
 
   for (const x of [-0.92, 0.92]) {
@@ -59,7 +83,7 @@ function createDanfo() {
       hub.rotation.z = Math.PI / 2; hub.position.copy(wheel.position); group.add(hub);
     }
   }
-  return { group, wheels };
+  return { group, wheels, indicators, brakeLights, passengerDoor };
 }
 
 export function initDanfos(scene, world) {
@@ -67,17 +91,17 @@ export function initDanfos(scene, world) {
   const stopX = world.city.starterCorridor?.busStops?.[0]?.x ?? 20;
   const buses = [];
   const specs = [
-    { x: -92, lane: routeZ - 3.2, direction: 1, speed: 9.2 },
-    { x: 48, lane: routeZ - 3.2, direction: 1, speed: 10.4 },
-    { x: 108, lane: routeZ + 3.2, direction: -1, speed: 8.7 },
-    { x: -34, lane: routeZ + 3.2, direction: -1, speed: 9.8 },
+    { x: -92, lane: routeZ - 3.2, direction: 1, speed: 9.2, route: 'OSHODI' },
+    { x: 48, lane: routeZ - 3.2, direction: 1, speed: 10.4, route: 'MILE 2' },
+    { x: 108, lane: routeZ + 3.2, direction: -1, speed: 8.7, route: 'MUSHIN' },
+    { x: -34, lane: routeZ + 3.2, direction: -1, speed: 9.8, route: 'YABA' },
   ];
   for (const spec of specs) {
-    const model = createDanfo();
+    const model = createDanfo(spec.route);
     model.group.position.set(spec.x, 0.08, spec.lane);
     model.group.rotation.y = spec.direction > 0 ? Math.PI / 2 : -Math.PI / 2;
     scene.add(model.group);
-    buses.push({ ...spec, group: model.group, wheels: model.wheels, stopTimer: 0, stoppedAtStop: false });
+    buses.push({ ...spec, group: model.group, wheels: model.wheels, indicators: model.indicators, brakeLights: model.brakeLights, passengerDoor: model.passengerDoor, phase: Math.random() * Math.PI * 2, stopTimer: 0, stoppedAtStop: false });
   }
   world.danfos = { buses, routeZ, stopX };
 }
@@ -105,6 +129,15 @@ export function updateDanfos(world, dt) {
       if (sameLane && ahead > 0 && ahead < lead) lead = ahead;
     }
     if (lead < 10) speed *= Math.max(0, Math.min(1, (lead - 2.5) / 7.5));
+    const t = world.time || 0;
+    const boarding = bus.stopTimer > 0;
+    bus.passengerDoor.position.z = 0.45 + (boarding ? 0.42 : 0);
+    bus.passengerDoor.rotation.y = boarding ? (bus.direction > 0 ? -0.28 : 0.28) : 0;
+    bus.group.position.y = 0.08 + Math.sin(t * 7 + bus.phase) * Math.min(0.028, speed * 0.0025);
+    const blinking = boarding || (Math.floor((t + bus.phase) * 2) % 8 === 0 && speed < bus.speed * 0.45);
+    for (const lamp of bus.indicators) lamp.material.emissive.setHex(blinking ? 0x9b3e0d : 0x120600);
+    const braking = speed < bus.speed * 0.22 || lead < 7;
+    for (const lamp of bus.brakeLights) lamp.material.emissive.setHex(braking ? 0x9b1710 : 0x160403);
     bus.group.position.x += bus.direction * speed * dt;
     bus.group.rotation.y = bus.direction > 0 ? Math.PI / 2 : -Math.PI / 2;
     for (const wheel of bus.wheels) wheel.rotation.x -= bus.direction * speed * dt / 0.38;

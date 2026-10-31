@@ -38,6 +38,8 @@ The supplied cinematic loading artwork now anchors the complete presentation rat
 
 The supplied gameplay reference now informs the active HUD hierarchy: a small branded corner, first-day mission brief, profile/level/XP/cash card, round district minimap with district chip, bottom navigation dock, and a right-side control legend. The structure is implemented in the existing plain HTML/CSS/ES-module shell and remains responsive on touch devices.
 
+The Nigerian urban environment pass extends the existing authored corridor instead of replacing procedural city generation. New sidewalk-safe assets include drainage covers, market shade stalls, overhead utility wires, a route board, and named frontage detail. The existing Danfo module now carries route variants and animated practical details: boarding door motion at the stop, body suspension movement, indicators, brake lights, mirrors, roof rails, and synchronized wheel rotation.
+
 ## Not copied
 
 The source repositories have different runtime architectures and feature boundaries. Their React components, bundler configuration, map data, OSM snapshot, assets, and multiplayer/modal claims are not copied into this build. Concepts are adapted only when they fit the existing plain ES-module game and THE MAINLAND roadmap.
