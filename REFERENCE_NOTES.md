@@ -30,6 +30,8 @@ The adapted pass now reshapes the plain Three.js HUD shell: dark zinc status car
 
 The supplied THE MAINLAND emblem is now the start-screen identity anchor. The city foundation is also being restyled around graphite/black surfaces, warm gold civic details, controlled teal accents, and explicit spatial zoning: asphalt for vehicles, sidewalks for lamps and pedestrians, property thresholds for doors, and plazas for civic/commercial landmarks.
 
+The latest authored-corridor pass adapts the references’ strongest world-building ideas: named low-rise frontages, drainage grates, hazard curb accents, utility poles, a sheltered bus stop, and dedicated yellow-and-green Danfo minibuses with open passenger doors, route signage, wheel animation, lane spacing, and bus-stop pauses. These are implemented as native Three.js modules in `city.js` and `danfo.js`, not copied source code.
+
 The starter-job implementation remains native to this repository. It does not copy the React/Vite application or its assets. Future selected adaptations are vehicle profiles/upgrades, named map destinations, a collapsible quick-action surface, and focused smoke checks.
 
 ## Not copied

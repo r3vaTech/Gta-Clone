@@ -126,6 +126,7 @@ import { initStocks, updateStocks } from './stocks.js';
 import { initCasinoboss, updateCasinoboss, endCasinoRaid } from './casinoboss.js';
 import { initCalendar, updateCalendar } from './calendar.js';
 import { initMall, updateMall } from './mall.js';
+import { initDanfos, updateDanfos } from './danfo.js';
 import { initBuildings, updateBuildings } from './buildings.js';
 import { initSewer, updateSewer } from './sewer.js';
 import { initArcade, updateArcade } from './arcade.js';
@@ -303,6 +304,7 @@ const world = {
   slowmoT: 0,
 };
 world.level = 1 + Math.floor(Math.sqrt(world.xp / 120));
+initDanfos(scene, world);
 world.bark = (pos, text) => {
   if (world.barks.length > 4) world.barks.shift();
   world.barks.push({ pos, text, t: 2.6, sx: -999, sy: -999 });
@@ -2857,6 +2859,7 @@ function update(dt) {
 
   updatePeds(world, dt);
   updateTraffic(world, dt);
+  updateDanfos(world, dt);
   updatePolice(world, dt);
   updatePoliceHelis(world, dt, heliHooks);
   updateHelis(dt);

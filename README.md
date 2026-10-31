@@ -19,6 +19,8 @@ The active development branch is `our-build`. The current build focuses on:
 - A first Mainland starter shift: sign up at the Galleria, collect a package, deliver it across the district, receive a wallet payout, and save completed-shift progress.
 - A reference-inspired HUD shell with dark status cards, amber/teal accents, top-right minimap, compact vitals, collapsible quick actions, and a Mainland activity card showing shift, route, progress, and reward without covering navigation controls.
 - A new Mainland visual direction anchored by the supplied cinematic emblem: graphite buildings, black asphalt, warm gold civic/commercial details, controlled teal accents, and sidewalk-safe landmark placement.
+- An authored starter corridor with named low-rise frontages, drainage grates, hazard curb accents, utility poles, a sheltered bus stop, and deliberate property-side placement.
+- Dedicated yellow-and-green Danfo minibuses with open passenger-side doors, route signage, wheel animation, lane movement, traffic spacing, and bus-stop pauses.
 
 The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 
@@ -83,7 +85,7 @@ The current realism pass is being built in this order:
 1. Road scale, lane readability, sidewalks, curbs, crossings, and intersections.
 2. Signalized intersections and traffic stopping behavior.
 3. Vehicle proportions, wheel contact, acceleration, braking, steering, reversing, and collision response.
-4. Traffic spacing, parked-car placement, turn behavior, and street-side vehicle interactions.
+4. Danfo routes, bus-stop interactions, parked-car placement, turn behavior, and street-side vehicle interactions.
 5. Extend the Mainland life loop from starter work into housing, expenses, and daily consequences.
 
 ## Mainland product roadmap
@@ -116,7 +118,7 @@ Development work is tracked on the `our-build` branch. Each meaningful feature p
 4. A descriptive Git commit.
 5. A push to the GitHub fork.
 
-Latest gameplay commit: `8c46f0c Improve Mainland roads and traffic realism`
+Latest gameplay pass: authored starter corridor, realistic roadside zoning, and Danfo transit; see `git log` for the exact commit history.
 
 Repository: <https://github.com/r3vaTech/Gta-Clone/tree/our-build>
 
@@ -128,6 +130,7 @@ js/main.js       Game loop, player, camera, vehicles, world state, persistence
 js/city.js       Roads, sidewalks, buildings, intersections, street props
 js/car.js        Vehicle meshes, driving physics, wheels, lights, collisions
 js/npc.js        Pedestrians, traffic spawning, traffic behavior
+js/danfo.js      Authored Danfo minibuses and starter-corridor transit behavior
 js/mall.js       Galleria landmark, door, interior, and interactions
 js/buildings.js  Generic enterable residential/shop/office interiors
 js/hud.js        HUD, minimap, mobile navigation, and status panels

@@ -387,6 +387,86 @@ export function buildCity(scene) {
     }
   }
 
+  // Authored Mainland starter corridor: a readable bus-stop edge with drains,
+  // utility poles, hazard curbs, and named low-rise frontages. These props are
+  // only placed after a clear-footprint check so they stay off the road and
+  // do not overlap generated buildings.
+  const starterRouteZ = roadCenter(Math.floor(N / 2));
+  const starterSidewalkZ = starterRouteZ + ROAD / 2 + 3.4;
+  const starterStops = [new THREE.Vector3(20, 0, starterRouteZ + 3.2)];
+  const starterAccent = new THREE.MeshStandardMaterial({ color: 0xc89532, roughness: 0.5, metalness: 0.25 });
+  const starterConcrete = new THREE.MeshStandardMaterial({ color: 0x514d49, roughness: 0.9 });
+  const starterPoleMat = new THREE.MeshStandardMaterial({ color: 0x1c1d20, roughness: 0.72, metalness: 0.2 });
+  for (let x = -54; x <= 54; x += 9) {
+    const grate = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.05, 0.5), starterConcrete);
+    grate.position.set(x, 0.08, starterRouteZ + ROAD / 2 + 0.55);
+    scene.add(grate);
+    const stripe = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.035, 0.32), starterAccent);
+    stripe.position.set(x + 3.1, 0.13, starterRouteZ + ROAD / 2 + 0.28);
+    scene.add(stripe);
+  }
+  for (const x of [-48, -16, 16, 48]) {
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 5.8, 6), starterPoleMat);
+    pole.position.set(x, 2.9, starterSidewalkZ + 1.8);
+    pole.castShadow = true;
+    scene.add(pole);
+    const crossbar = new THREE.Mesh(new THREE.BoxGeometry(1.35, 0.1, 0.1), starterConcrete);
+    crossbar.position.set(x, 5.55, starterSidewalkZ + 1.8);
+    scene.add(crossbar);
+  }
+  const shelter = new THREE.Group();
+  const shelterRoof = new THREE.Mesh(new THREE.BoxGeometry(7.6, 0.18, 2.4), starterAccent);
+  shelterRoof.position.y = 2.65;
+  shelter.add(shelterRoof);
+  for (const x of [-3.2, 3.2]) {
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.5, 0.16), starterConcrete);
+    post.position.set(x, 1.25, 0);
+    shelter.add(post);
+  }
+  const bench = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.24, 0.55), starterConcrete);
+  bench.position.set(0, 0.8, 0.35);
+  shelter.add(bench);
+  shelter.position.set(starterStops[0].x, 0.14, starterSidewalkZ + 2.4);
+  scene.add(shelter);
+  const busSign = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.1, 0.12), starterAccent);
+  busSign.position.set(starterStops[0].x - 4.5, 2.25, starterSidewalkZ + 1.8);
+  scene.add(busSign);
+  const frontageNames = ['MAMA TITI KITCHEN', 'ORITA MARKET ROW', 'MAINLAND PHARMACY', 'CIVIC SERVICES'];
+  for (let i = 0; i < frontageNames.length; i++) {
+    const x = -42 + i * 28;
+    const z = starterRouteZ + 22;
+    const probe = new THREE.Vector3(x, 1, z);
+    if (pointBlocked(probe, colliders, 3.2)) continue;
+    const group = new THREE.Group();
+    const width = 17;
+    const depth = 8;
+    const height = 6 + (i % 2) * 2;
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), new THREE.MeshStandardMaterial({ color: [0x443a31, 0x303b3b, 0x3a332b, 0x36363b][i], roughness: 0.9 }));
+    wall.position.y = height / 2;
+    wall.castShadow = true;
+    group.add(wall);
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(width + 0.5, 0.22, depth + 0.4), starterConcrete);
+    roof.position.y = height + 0.12;
+    group.add(roof);
+    const awning = new THREE.Mesh(new THREE.BoxGeometry(width - 1.2, 0.16, 1.1), starterAccent);
+    awning.position.set(0, 3.05, depth / 2 + 0.5);
+    group.add(awning);
+    const signCanvas = document.createElement('canvas');
+    signCanvas.width = 512; signCanvas.height = 88;
+    const sg = signCanvas.getContext('2d');
+    sg.fillStyle = '#111216'; sg.fillRect(0, 0, 512, 88);
+    sg.strokeStyle = '#c89532'; sg.lineWidth = 5; sg.strokeRect(4, 4, 504, 80);
+    sg.fillStyle = '#f6e6ba'; sg.font = '900 28px Arial'; sg.textAlign = 'center'; sg.textBaseline = 'middle';
+    sg.fillText(frontageNames[i], 256, 44);
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(7.2, 1.24), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(signCanvas) }));
+    sign.position.set(0, 4.6, depth / 2 + 0.06);
+    group.add(sign);
+    group.position.set(x, 0.18, z);
+    scene.add(group);
+    colliders.push({ x0: x - width / 2, x1: x + width / 2, z0: z - depth / 2, z1: z + depth / 2, h: height + 0.5 });
+  }
+  const starterCorridor = { routeZ: starterRouteZ, busStops: starterStops };
+
   // street lamps at intersections (warm sodium glow)
   const poleGeo = new THREE.CylinderGeometry(0.12, 0.12, 5.4, 6);
   const poleMat = new THREE.MeshLambertMaterial({ color: 0x2c2c32 });
@@ -438,7 +518,7 @@ export function buildCity(scene) {
   const mid = Math.floor(N / 2);
   const spawn = new THREE.Vector3(roadCenter(mid), 0, roadCenter(mid));
 
-  return { colliders, buildings, pedRects, roadXs, roadZs, spawn, helipads, windowMats, lampGlowMat: glowMat, bulbMat };
+  return { colliders, buildings, pedRects, roadXs, roadZs, spawn, helipads, windowMats, lampGlowMat: glowMat, bulbMat, starterCorridor };
 }
 
 // Push a circle (pos, r) out of every AABB collider it overlaps.
