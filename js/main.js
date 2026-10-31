@@ -11,6 +11,7 @@ import { initHUD, updateHUD, setHint, showBanner, hideBanner, showToast, showNew
 import { initSound, sfxShot, sfxCrash, sfxPickup, sfxWeb, sfxMissionPass, engine, setEngine, rotor, siren, setSiren, rainAmb, setRadioStation, RADIO_STATIONS, cityHum, setHum, chase, setChase, setMasterVolume } from './sound.js';
 import { createSkyDome, applyDayNight, DAY_START } from './daynight.js';
 import { initMissions, updateMissions, failMission, mission } from './missions.js';
+import { initMainlandJob, updateMainlandJob } from './mainland-job.js';
 import { initWeather, updateWeather } from './weather.js';
 import { buildLandmarks, updateLandmarks } from './landmarks.js';
 import { initWeb, fireWeb, releaseWeb, swingStep, updateWebVisual, poseSwing, poseFall } from './web.js';
@@ -434,6 +435,7 @@ initCasinoboss(scene, world, save);
 initCalendar(world);
 initMall(scene, world, save);
 initBuildings(scene, world);
+initMainlandJob(scene, world, save);
 initSewer(scene, world, save);
 initArcade(scene, world, save);
 initGolf(scene, world, save);
@@ -646,6 +648,7 @@ function saveGame() {
       lifeGoal: world.lifeGoal,
       rentDue: world.rentDue,
       lifeStarted: world.lifeStarted,
+      mainlandJobDone: world.mainlandJob?.completed || 0,
       props: world.props?.owned, rep: world.rep, chaosBest: world.chaosBest,
       dailyDay: world.dailyDay, dailyDone: world.dailyDone,
       arenaBest: world.arena?.best, races: world.raceBest, mods: world.garageMods,
@@ -3105,6 +3108,8 @@ function update(dt) {
       showContextButtons({ arena: wantArena, buy: wantBuy });
     }
   }
+  updateMainlandJob(world, dt, pressed);
+  if (world.mainlandJob?.hint) setHint(world.mainlandJob.hint);
   updateCamera(dt);
   updateSiren();
   updateHUD(world);

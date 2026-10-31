@@ -322,6 +322,26 @@ function drawMinimap(world) {
       g.fillText('GALLERIA', gx + 9, gz - 7);
       g.restore();
     }
+    const job = world.mainlandJob;
+    if (job && (job.phase === 'pickup' || job.phase === 'deliver')) {
+      const target = job.phase === 'pickup' ? job.pickup : job.drop;
+      const [jx, jz] = toMap(target.x, target.z);
+      const [px, pz] = toMap(world.player.pos.x, world.player.pos.z);
+      g.save();
+      g.strokeStyle = job.phase === 'pickup' ? '#f4c84a' : '#49d0c0';
+      g.lineWidth = 1.6;
+      g.setLineDash([3, 3]);
+      g.beginPath(); g.moveTo(px, pz); g.lineTo(jx, jz); g.stroke();
+      g.setLineDash([]);
+      g.fillStyle = job.phase === 'pickup' ? '#f4c84a' : '#49d0c0';
+      g.strokeStyle = '#071217';
+      g.lineWidth = 2;
+      g.beginPath(); g.arc(jx, jz, 5, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.fillStyle = '#071217';
+      g.font = '900 8px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(job.phase === 'pickup' ? 'P' : 'D', jx, jz + 0.5);
+      g.restore();
+    }
     g.fillStyle = 'rgba(255,255,255,.86)';
     g.font = '900 10px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.fillText('N', size / 2, 10);

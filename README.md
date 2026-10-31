@@ -16,8 +16,9 @@ The active development branch is `our-build`. The current build focuses on:
 - A visible Galleria landmark with an outward-facing hinged door, readable interior lighting, seating, reception counter, plants, fountain, and kiosk.
 - Enterable residential, shop, and office building shells with restricted actions by building type.
 - A grounded character creator with backgrounds, starter goals, and saved life-profile data.
+- A first Mainland starter shift: sign up at the Galleria, collect a package, deliver it across the district, receive a wallet payout, and save completed-shift progress.
 
-The next planned step is to refine vehicle handling and street behavior, then return to the first Mainland life loop: starter work, payout, expenses, renting, and persistence.
+The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 
 ## Run locally
 
@@ -81,7 +82,7 @@ The current realism pass is being built in this order:
 2. Signalized intersections and traffic stopping behavior.
 3. Vehicle proportions, wheel contact, acceleration, braking, steering, reversing, and collision response.
 4. Traffic spacing, parked-car placement, turn behavior, and street-side vehicle interactions.
-5. Return to the Mainland life loop and connect streets to jobs, housing, money, and daily consequences.
+5. Extend the Mainland life loop from starter work into housing, expenses, and daily consequences.
 
 ## Mainland product roadmap
 
@@ -113,7 +114,7 @@ Development work is tracked on the `our-build` branch. Each meaningful feature p
 4. A descriptive Git commit.
 5. A push to the GitHub fork.
 
-Latest published commit: `8c46f0c Improve Mainland roads and traffic realism`
+Latest gameplay commit: `8c46f0c Improve Mainland roads and traffic realism`
 
 Repository: <https://github.com/r3vaTech/Gta-Clone/tree/our-build>
 

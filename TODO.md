@@ -13,6 +13,7 @@
 - Keep mobile and desktop game entry usable while the new slice is under construction.
 
 ## 2. Deliver the first playable character and life loop
+- Implemented first slice: Galleria starter shift, package pickup, street delivery, wallet payout, and saved completion count.
 - Let a player create a character with a name, appearance preset, background, and starting goal.
 - Let the player explore the first district, take a starter job, receive a wallet payout, track expenses, rent a room, and persist progress.
 - Make the minimap readable and intentionally designed for navigation: clear roads, player position, district landmarks, and a distinct marker for the first accessible building.
