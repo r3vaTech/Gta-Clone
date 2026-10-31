@@ -28,6 +28,8 @@ The first URL is spelled `The-mainlanf` in GitHub and is a valid repository. The
 
 The adapted pass now reshapes the plain Three.js HUD shell: dark zinc status cards, amber/teal accents, cash/time/wanted status, a top-right minimap, a compact player-vitals card, a collapsible bottom quick-action dock, and a **MAINLAND HUSTLE** activity card. The activity card shows the current shift number, Galleria route, pickup/delivery step, progress bar, and reward without covering the map or mobile controls.
 
+The supplied THE MAINLAND emblem is now the start-screen identity anchor. The city foundation is also being restyled around graphite/black surfaces, warm gold civic details, controlled teal accents, and explicit spatial zoning: asphalt for vehicles, sidewalks for lamps and pedestrians, property thresholds for doors, and plazas for civic/commercial landmarks.
+
 The starter-job implementation remains native to this repository. It does not copy the React/Vite application or its assets. Future selected adaptations are vehicle profiles/upgrades, named map destinations, a collapsible quick-action surface, and focused smoke checks.
 
 ## Not copied

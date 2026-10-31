@@ -171,7 +171,7 @@ export function buildCity(scene) {
   // scrubland beyond the city
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(CITY * 3, CITY * 3),
-    new THREE.MeshLambertMaterial({ color: 0x49583a })
+    new THREE.MeshLambertMaterial({ color: 0x344437 })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.05;
@@ -181,7 +181,7 @@ export function buildCity(scene) {
   // asphalt base slab
   const slab = new THREE.Mesh(
     new THREE.PlaneGeometry(CITY, CITY),
-    new THREE.MeshLambertMaterial({ color: 0x303035 })
+    new THREE.MeshLambertMaterial({ color: 0x1d1d22 })
   );
   slab.rotation.x = -Math.PI / 2;
   slab.receiveShadow = true;
@@ -247,13 +247,13 @@ export function buildCity(scene) {
   }
 
   // gritty desaturated building palette, windows glow at dusk
-  const winSets = ['#6e747c', '#7a7264', '#5e6a76', '#80775f', '#697078', '#746c5e'].map(windowTextures);
-  const roofMat = new THREE.MeshLambertMaterial({ color: 0x46474e });
-  const roofPropMat = new THREE.MeshLambertMaterial({ color: 0x55565c });
-  const sidewalkMat = new THREE.MeshLambertMaterial({ color: 0x77787c });
-  const grassMat = new THREE.MeshLambertMaterial({ color: 0x46613a });
-  const trunkMat = new THREE.MeshLambertMaterial({ color: 0x5a4128 });
-  const leafMat = new THREE.MeshLambertMaterial({ color: 0x35602a });
+  const winSets = ['#202328', '#29251f', '#1d3035', '#3a3025', '#263139', '#332923'].map(windowTextures);
+  const roofMat = new THREE.MeshLambertMaterial({ color: 0x111216 });
+  const roofPropMat = new THREE.MeshLambertMaterial({ color: 0x34302a });
+  const sidewalkMat = new THREE.MeshLambertMaterial({ color: 0x625d54 });
+  const grassMat = new THREE.MeshLambertMaterial({ color: 0x344b37 });
+  const trunkMat = new THREE.MeshLambertMaterial({ color: 0x4b3322 });
+  const leafMat = new THREE.MeshLambertMaterial({ color: 0x2f5c3a });
   const trunkGeo = new THREE.CylinderGeometry(0.22, 0.3, 1.6, 6);
   const leafGeo = new THREE.ConeGeometry(1.7, 3.6, 8);
   const acGeo = new THREE.BoxGeometry(2.2, 1.4, 2.2);
@@ -341,11 +341,16 @@ export function buildCity(scene) {
           scene.add(b);
           const collider = { x0: lotX - w / 2, z0: lotZ - d / 2, x1: lotX + w / 2, z1: lotZ + d / 2, h: hgt + 0.5 };
           colliders.push(collider);
-          const doorZ = Math.max(sz + 3, Math.min(lotZ + d / 2 + 1.2, sz + BLOCK - 3));
-          const doorX = Math.max(sx + 3, Math.min(lotX, sx + BLOCK - 3));
+          const doorCandidates = [
+            new THREE.Vector3(lotX, 0, collider.z1 + 1.5),
+            new THREE.Vector3(lotX, 0, collider.z0 - 1.5),
+            new THREE.Vector3(collider.x1 + 1.5, 0, lotZ),
+            new THREE.Vector3(collider.x0 - 1.5, 0, lotZ),
+          ].filter((p) => p.x > sx + 4 && p.x < sx + BLOCK - 4 && p.z > sz + 4 && p.z < sz + BLOCK - 4);
+          const door = doorCandidates[0] || new THREE.Vector3(lotX, 0, Math.min(sz + BLOCK - 4, collider.z1 + 1.5));
           buildings.push({
             center: new THREE.Vector3(lotX, 0, lotZ),
-            door: new THREE.Vector3(doorX, 0, doorZ),
+            door,
             type: hgt >= 30 ? 'office' : (hgt <= 18 ? 'home' : 'shop'),
             collider,
           });
@@ -392,8 +397,9 @@ export function buildCity(scene) {
   const glowMat = new THREE.MeshBasicMaterial({ color: 0xffb850, transparent: true, opacity: 0.04, depthWrite: false });
   for (let i = 0; i <= N; i += 2) {
     for (let j = 0; j <= N; j += 2) {
-      const x = roadCenter(i) + ROAD / 2 + 1.2;
-      const z = roadCenter(j) + ROAD / 2 + 1.2;
+      // Keep furniture on the property-side corner sidewalk, never in the asphalt.
+      const x = roadCenter(i) + ROAD / 2 + 4.2;
+      const z = roadCenter(j) + ROAD / 2 + 4.2;
       const pole = new THREE.Mesh(poleGeo, poleMat);
       pole.position.set(x, 2.7, z);
       pole.castShadow = true;
@@ -413,8 +419,8 @@ export function buildCity(scene) {
   const signalGreenMat = new THREE.MeshLambertMaterial({ color: 0x3ca86b, emissive: 0x0d3d25 });
   for (let i = 0; i <= N; i += 2) {
     for (let j = 0; j <= N; j += 2) {
-      const x = roadCenter(i) + ROAD / 2 + 1.4;
-      const z = roadCenter(j) + ROAD / 2 + 1.4;
+      const x = roadCenter(i) + ROAD / 2 + 5.0;
+      const z = roadCenter(j) + ROAD / 2 + 5.0;
       const signalPole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 4.4, 6), signalPoleMat);
       signalPole.position.set(x, 2.2, z);
       scene.add(signalPole);

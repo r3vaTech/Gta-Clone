@@ -2,6 +2,8 @@
 
 ## Current priority — realism pass before TODO continuation
 - Keep the project as a game build and do not convert or publish it as a permanent website.
+- Redesign the visual identity around the supplied THE MAINLAND emblem: black, graphite, warm gold, and controlled teal accents rather than the inherited prototype palette.
+- Enforce spatial zones: vehicles on asphalt, pedestrians and lamps on sidewalks, doors on property thresholds, and civic/commercial landmarks inside deliberate plazas.
 - Improve the road system first: lane readability, intersections, sidewalks, traffic flow, and street-scale visual detail.
 - Improve the car system second: believable proportions, wheel/road contact, lighting, braking, acceleration, steering, and traffic behavior.
 - Add visible signalized intersections and make traffic respect red and amber phases.

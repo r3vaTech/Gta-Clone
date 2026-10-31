@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { pointBlocked } from './city.js';
+import { pointBlocked, ROAD } from './city.js';
 import { showToast, showNews, showMissionMsg } from './hud.js';
 import { sfxMissionPass, sfxPickup } from './sound.js';
 
@@ -30,32 +30,58 @@ const CASINO_MODES = [
 ];
 
 export function initMayor(scene, world, save) {
-  // a columned facade on the plaza south of spawn
-  let hallPos = world.city.spawn.clone().add(new THREE.Vector3(0, 0, -30));
+  // Civic hall lives in the block-side plaza beside the spawn intersection,
+  // never on the asphalt lane where the old prototype placed it.
+  const plazaOffset = ROAD / 2 + 22;
+  let hallPos = world.city.spawn.clone().add(new THREE.Vector3(plazaOffset, 0, -plazaOffset));
   const probe = new THREE.Vector3(hallPos.x, 1, hallPos.z);
-  if (pointBlocked(probe, world.city.colliders, 2)) hallPos = world.city.spawn.clone().add(new THREE.Vector3(-30, 0, 0));
+  if (pointBlocked(probe, world.city.colliders, 2)) hallPos = world.city.spawn.clone().add(new THREE.Vector3(-plazaOffset, 0, -plazaOffset));
+
+  const plaza = new THREE.Mesh(
+    new THREE.BoxGeometry(26, 0.22, 24),
+    new THREE.MeshStandardMaterial({ color: 0x28262a, roughness: 0.85, metalness: 0.08 })
+  );
+  plaza.position.copy(hallPos).setY(0.11);
+  plaza.receiveShadow = true;
+  scene.add(plaza);
+  const plazaTrim = new THREE.Mesh(
+    new THREE.BoxGeometry(22, 0.035, 20),
+    new THREE.MeshBasicMaterial({ color: 0xc89532 })
+  );
+  plazaTrim.position.copy(hallPos).setY(0.24);
+  scene.add(plazaTrim);
 
   const base = new THREE.Mesh(
-    new THREE.BoxGeometry(8, 0.6, 5),
-    new THREE.MeshLambertMaterial({ color: 0x8a8778 })
+    new THREE.BoxGeometry(12, 0.6, 8),
+    new THREE.MeshStandardMaterial({ color: 0x17181b, roughness: 0.72, metalness: 0.18 })
   );
   base.position.copy(hallPos).setY(0.3);
   scene.add(base);
-  for (const dx of [-3, -1, 1, 3]) {
+  for (const dx of [-4, -2, 0, 2, 4]) {
     const col = new THREE.Mesh(
       new THREE.CylinderGeometry(0.32, 0.36, 4.2, 10),
-      new THREE.MeshLambertMaterial({ color: 0xd8d2c0 })
+      new THREE.MeshStandardMaterial({ color: 0xc89532, roughness: 0.5, metalness: 0.32 })
     );
-    col.position.set(hallPos.x + dx, 2.6, hallPos.z - 1.6);
+    col.position.set(hallPos.x + dx, 2.6, hallPos.z + 2.3);
     col.castShadow = true;
     scene.add(col);
   }
   const roof = new THREE.Mesh(
-    new THREE.BoxGeometry(8.6, 0.7, 3),
-    new THREE.MeshLambertMaterial({ color: 0x8a8778 })
+    new THREE.BoxGeometry(12.6, 0.7, 3.2),
+    new THREE.MeshStandardMaterial({ color: 0xc89532, roughness: 0.48, metalness: 0.28 })
   );
-  roof.position.copy(hallPos).add(new THREE.Vector3(0, 4.9, -1.6));
+  roof.position.copy(hallPos).add(new THREE.Vector3(0, 4.9, 1.7));
   scene.add(roof);
+  const doorPos = hallPos.clone().add(new THREE.Vector3(0, 0, 4.15));
+  const door = new THREE.Mesh(
+    new THREE.BoxGeometry(2.2, 3.0, 0.18),
+    new THREE.MeshStandardMaterial({ color: 0x08090b, emissive: 0x4b2c08, emissiveIntensity: 0.35, metalness: 0.55, roughness: 0.3 })
+  );
+  door.position.copy(doorPos).setY(1.55);
+  scene.add(door);
+  const steps = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.28, 1.8), new THREE.MeshStandardMaterial({ color: 0x555159, roughness: 0.8 }));
+  steps.position.copy(hallPos).add(new THREE.Vector3(0, 0.18, 4.8));
+  scene.add(steps);
   const c = document.createElement('canvas');
   c.width = 192; c.height = 40;
   const g = c.getContext('2d');
@@ -65,12 +91,13 @@ export function initMayor(scene, world, save) {
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   const sign = new THREE.Mesh(new THREE.PlaneGeometry(5, 1.05), new THREE.MeshBasicMaterial({ map: tex }));
-  sign.position.copy(hallPos).add(new THREE.Vector3(0, 4.2, 0.05));
+  sign.position.copy(hallPos).add(new THREE.Vector3(0, 4.2, 2.45));
+  sign.rotation.y = Math.PI;
   scene.add(sign);
 
   world.policy = { police: 1, traffic: 1, casino: 1, ...(save?.policy || {}) };
   world.mayor = {
-    hallPos,
+    hallPos: doorPos,
     elected: !!save?.mayor,
     salaryDay: save?.salaryDay ?? -1,
   };

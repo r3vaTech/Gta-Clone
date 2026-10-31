@@ -31,9 +31,19 @@ function galleriaSignTexture() {
 }
 
 export function initMall(scene, world, save) {
-  let door = new THREE.Vector3(blockStart(5) + 8, 0, blockStart(6) + 8);
+  // Keep the entrance inside the block-side pedestrian zone. The old +8
+  // fallback sat right on the road edge and made the door look detached.
+  let door = new THREE.Vector3(blockStart(5) + 20, 0, blockStart(6) + 20);
   const probe = new THREE.Vector3(door.x, 1, door.z);
-  if (pointBlocked(probe, world.city.colliders, 2)) door = new THREE.Vector3(blockStart(5) + 30, 0, blockStart(6) + 3);
+  if (pointBlocked(probe, world.city.colliders, 2)) door = new THREE.Vector3(blockStart(5) + 42, 0, blockStart(6) + 20);
+  if (pointBlocked(new THREE.Vector3(door.x, 1, door.z), world.city.colliders, 2)) door = new THREE.Vector3(blockStart(5) + 20, 0, blockStart(6) + 42);
+
+  const approach = new THREE.Mesh(
+    new THREE.BoxGeometry(7.2, 0.08, 5.4),
+    new THREE.MeshStandardMaterial({ color: 0x3d3a3a, roughness: 0.9 })
+  );
+  approach.position.copy(door).setY(0.05);
+  scene.add(approach);
 
   const frame = new THREE.Mesh(
     new THREE.BoxGeometry(3.2, 3.4, 0.5),
