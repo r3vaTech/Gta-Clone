@@ -125,6 +125,7 @@ import { initStocks, updateStocks } from './stocks.js';
 import { initCasinoboss, updateCasinoboss, endCasinoRaid } from './casinoboss.js';
 import { initCalendar, updateCalendar } from './calendar.js';
 import { initMall, updateMall } from './mall.js';
+import { initBuildings, updateBuildings } from './buildings.js';
 import { initSewer, updateSewer } from './sewer.js';
 import { initArcade, updateArcade } from './arcade.js';
 import { initGolf, updateGolf } from './golf.js';
@@ -264,6 +265,11 @@ const world = {
   bustedT: 0,
   busted: false,
   money: save.money || 0,
+  mapDetails: false,
+  lifeBackground: save.lifeBackground || 'hustler',
+  lifeGoal: save.lifeGoal || 'steady',
+  rentDue: save.rentDue || 300,
+  lifeStarted: !!save.lifeStarted,
   damageFlash: 0,
   time: 0,
   lastShot: null,
@@ -425,6 +431,7 @@ initStocks(scene, world, save);
 initCasinoboss(scene, world, save);
 initCalendar(world);
 initMall(scene, world, save);
+initBuildings(scene, world);
 initSewer(scene, world, save);
 initArcade(scene, world, save);
 initGolf(scene, world, save);
@@ -633,6 +640,10 @@ function saveGame() {
       tokens: world.tokensGot,
       suit: world.suit, suits: world.suitsOwned, settings: world.settings,
       char: world.charKey,
+      lifeBackground: world.lifeBackground,
+      lifeGoal: world.lifeGoal,
+      rentDue: world.rentDue,
+      lifeStarted: world.lifeStarted,
       props: world.props?.owned, rep: world.rep, chaosBest: world.chaosBest,
       dailyDay: world.dailyDay, dailyDone: world.dailyDone,
       arenaBest: world.arena?.best, races: world.raceBest, mods: world.garageMods,
@@ -2606,8 +2617,36 @@ function respawn() {
 }
 
 // ---------- start screen / pointer lock ----------
-
 const startEl = document.getElementById('start');
+const LIFE_BACKGROUNDS = {
+  hustler: { label: 'Street Hustler', cash: 250, rent: 300, brief: 'You know the shortcuts, the people, and how to turn a small opportunity into today\'s money.' },
+  trader: { label: 'Market Trader', cash: 450, rent: 400, brief: 'You start with a little more stock money and a sharper eye for prices, favours, and good foot traffic.' },
+  office: { label: 'Office Starter', cash: 650, rent: 500, brief: 'You have a steadier cushion and useful paperwork skills, but your rent and expectations start higher.' },
+};
+const LIFE_GOALS = {
+  steady: { label: 'Find steady income', prompt: 'Find your first reliable job before the day gets away from you.' },
+  home: { label: 'Secure a better home', prompt: 'Earn enough to move beyond a room that only solves today\'s problem.' },
+  business: { label: 'Build a small business', prompt: 'Turn your first payout into stock, tools, or a useful connection.' },
+};
+const backgroundSelect = document.getElementById('background-select');
+const goalSelect = document.getElementById('goal-select');
+const lifeBrief = document.getElementById('life-brief');
+let chosenBackground = save.lifeBackground || 'hustler';
+let chosenGoal = save.lifeGoal || 'steady';
+function updateLifeBrief() {
+  const background = LIFE_BACKGROUNDS[chosenBackground];
+  const goal = LIFE_GOALS[chosenGoal];
+  if (lifeBrief && background && goal) {
+    lifeBrief.textContent = `${background.brief} Goal: ${goal.label}. Starter cash $${background.cash} · first rent $${background.rent}.`;
+  }
+}
+if (backgroundSelect && goalSelect) {
+  backgroundSelect.value = chosenBackground;
+  goalSelect.value = chosenGoal;
+  backgroundSelect.onchange = () => { chosenBackground = backgroundSelect.value; updateLifeBrief(); };
+  goalSelect.onchange = () => { chosenGoal = goalSelect.value; updateLifeBrief(); };
+  updateLifeBrief();
+}
 
 // character picker: cards on the start screen, choice saved for next time
 let chosenChar = charDef.key;
@@ -2620,7 +2659,7 @@ let chosenChar = charDef.key;
     card.innerHTML =
       `<div class="swatch" style="background:linear-gradient(135deg,${c.colors.shirt},${c.colors.pants})"></div>` +
       `<div class="cname">${c.name}</div><div class="ctag">${c.tagline}</div>` +
-      `<div class="stat">SPD ${'★'.repeat(Math.round(c.speed * 4))}<br>HP ${c.health}<br>JMP ${'★'.repeat(Math.round(c.jump * 4))}</div>`;
+      `<div class="stat">PACE ${'★'.repeat(Math.round(c.speed * 4))}<br>GRIT ${c.health}<br>MOBILITY ${'★'.repeat(Math.round(c.jump * 4))}</div>`;
     card.onclick = () => {
       chosenChar = c.key;
       document.querySelectorAll('.charcard').forEach((el) => el.classList.remove('sel'));
@@ -2653,6 +2692,16 @@ function applySuitColors(colors) {
 }
 
 document.getElementById('playbtn').addEventListener('click', () => {
+  const background = LIFE_BACKGROUNDS[chosenBackground];
+  const goal = LIFE_GOALS[chosenGoal];
+  world.lifeBackground = chosenBackground;
+  world.lifeGoal = chosenGoal;
+  world.rentDue = background.rent;
+  if (!world.lifeStarted) {
+    world.money = Math.max(world.money, background.cash);
+    world.lifeStarted = true;
+    saveGame();
+  }
   startEl.style.display = 'none';
   initSound();
   siren.start();
@@ -2667,6 +2716,7 @@ document.getElementById('playbtn').addEventListener('click', () => {
     keepAwake();    // and no screen dimming mid-chase
   }
   showTouchUI(true);
+  showMissionMsg('DAY 1', `${background.label} · ${goal.prompt}`, '#3eb8ad');
 });
 document.addEventListener('pointerlockchange', () => {
   if (!document.pointerLockElement && !isTouch && gameState === 'play') pauseGame();
@@ -2912,6 +2962,7 @@ function update(dt) {
   updateCasinoboss(world, dt, pressed);
   updateCalendar(world, dt, scene);
   updateMall(world, dt, pressed);
+  updateBuildings(world, dt, pressed);
   updateSewer(world, dt, pressed);
   updateArcade(world, dt, pressed);
   updateGolf(world, dt, pressed);

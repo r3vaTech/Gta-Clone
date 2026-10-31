@@ -153,6 +153,7 @@ function helipadTexture() {
 
 export function buildCity(scene) {
   const colliders = [];   // {x0,z0,x1,z1,h}
+  const buildings = [];
   const pedRects = [];
   const roadXs = [];
   const roadZs = [];
@@ -300,7 +301,16 @@ export function buildCity(scene) {
           b.castShadow = true;
           b.receiveShadow = true;
           scene.add(b);
-          colliders.push({ x0: lotX - w / 2, z0: lotZ - d / 2, x1: lotX + w / 2, z1: lotZ + d / 2, h: hgt + 0.5 });
+          const collider = { x0: lotX - w / 2, z0: lotZ - d / 2, x1: lotX + w / 2, z1: lotZ + d / 2, h: hgt + 0.5 };
+          colliders.push(collider);
+          const doorZ = Math.max(sz + 3, Math.min(lotZ + d / 2 + 1.2, sz + BLOCK - 3));
+          const doorX = Math.max(sx + 3, Math.min(lotX, sx + BLOCK - 3));
+          buildings.push({
+            center: new THREE.Vector3(lotX, 0, lotZ),
+            door: new THREE.Vector3(doorX, 0, doorZ),
+            type: hgt >= 30 ? 'office' : (hgt <= 18 ? 'home' : 'shop'),
+            collider,
+          });
 
           // rooftop clutter: AC units + antennas
           const top = hgt + 0.2;
@@ -362,7 +372,7 @@ export function buildCity(scene) {
   const mid = Math.floor(N / 2);
   const spawn = new THREE.Vector3(roadCenter(mid), 0, roadCenter(mid));
 
-  return { colliders, pedRects, roadXs, roadZs, spawn, helipads, windowMats, lampGlowMat: glowMat, bulbMat };
+  return { colliders, buildings, pedRects, roadXs, roadZs, spawn, helipads, windowMats, lampGlowMat: glowMat, bulbMat };
 }
 
 // Push a circle (pos, r) out of every AABB collider it overlaps.

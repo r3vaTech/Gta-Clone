@@ -15,17 +15,17 @@ export function randomOutfit() {
 // Playable roster: pick one at the start screen. Each tweaks the feel.
 export const CHARACTERS = [
   {
-    key: 'web', name: 'WEAVER', tagline: 'Balanced all-rounder',
+    key: 'web', name: 'THE GRINDER', tagline: 'Balanced, dependable, always moving',
     colors: { shirt: '#c1121f', pants: '#1f3fa8', skin: '#c98e63' },
     speed: 1, health: 100, jump: 1, webReel: 1,
   },
   {
-    key: 'dash', name: 'BOLT', tagline: 'Fast & agile, glass cannon',
+    key: 'dash', name: 'THE CONNECTOR', tagline: 'Fast, social, and quick on the turn',
     colors: { shirt: '#f5a800', pants: '#2a2a30', skin: '#8d5a3a' },
     speed: 1.25, health: 80, jump: 1.15, webReel: 1.2,
   },
   {
-    key: 'tank', name: 'BRICK', tagline: 'Tough bruiser, hits hard',
+    key: 'tank', name: 'THE BUILDER', tagline: 'Tough, patient, and hard to push around',
     colors: { shirt: '#2a6a5a', pants: '#181f28', skin: '#6b4226' },
     speed: 0.85, health: 150, jump: 0.9, webReel: 0.85, melee: 1.6,
   },

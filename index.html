@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#090d13">
-  <title>Open City</title>
+  <title>THE MAINLAND — Your City. Your People. Your Story.</title>
   <style>
   html, body {
     width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
@@ -22,10 +22,14 @@
   }
   #health { height: 100%; width: 100%; background: linear-gradient(90deg,#2faf4e,#5fe07a); transition: width .15s; }
 
+  #bottomleft { position: absolute; left: 16px; bottom: 16px; width: 202px; height: 202px; padding: 8px; box-sizing: border-box; border-radius: 50%; background: rgba(7,12,17,.88); border: 2px solid rgba(255,255,255,.45); box-shadow: 0 5px 22px rgba(0,0,0,.52), 0 0 0 1px rgba(73,208,192,.28); overflow: hidden; }
+  #minimap { display: block; width: 186px; height: 186px; border-radius: 50%; background: #17202b; }
+  #minimapTitle { position: absolute; top: 12px; left: 0; right: 0; color: rgba(255,255,255,.78); font: 800 9px Arial; letter-spacing: 2px; text-align: center; pointer-events: none; text-shadow: 1px 1px 2px #000; }
+
   #mobile-vitals {
     display: none;
     position: fixed; left: 50%; bottom: 230px; transform: translateX(-50%);
-    width: min(220px, 58vw); padding: 8px 10px 7px; box-sizing: border-box;
+    width: min(180px, 46vw); padding: 7px 9px; box-sizing: border-box;
     color: #fff; background: rgba(8,12,18,.78); border: 1px solid rgba(255,255,255,.22);
     border-radius: 10px; box-shadow: 0 5px 18px rgba(0,0,0,.32); z-index: 6;
     font: 800 10px/1.1 Arial; letter-spacing: 1px; pointer-events: none;
@@ -33,9 +37,7 @@
   #mobile-vitals .vitals-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   #mobile-vitals .vitals-label { color: #aebed0; }
   #mobile-vitals .vitals-value { color: #fff; font-size: 12px; letter-spacing: .5px; }
-  #mobile-health-track { height: 7px; margin: 5px 0 7px; overflow: hidden; border-radius: 5px; background: rgba(255,255,255,.16); }
-  #mobile-health-fill { width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#2faf4e,#5fe07a); transition: width .15s, background .15s; }
-  #mobile-ammo-label { max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #ffd24a; }
+  #mobile-ammo-label { max-width: 112px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #ffd24a; }
 
   #speed {
     position: absolute; right: 26px; bottom: 24px; font-size: 34px; font-weight: 800; font-style: italic;
@@ -110,7 +112,7 @@
   body.touch #mobile-vitals { display: block; }
   body.touch #healthwrap { display: none; }
   body.touch #hint { bottom: auto; top: 76px; font-size: 13px; max-width: 70vw; }
-  body.touch #bottomleft { transform: scale(0.72); transform-origin: bottom left; bottom: 142px; left: 10px; }
+  body.touch #bottomleft { transform: scale(0.76); transform-origin: top right; top: 58px; right: 8px; bottom: auto; left: auto; }
   body.touch #weapon { right: 18px; bottom: 198px; font-size: 15px; }
   body.touch #speed { right: 18px; bottom: 170px; font-size: 22px; }
   body.touch #mission { left: 10px; top: 58px; padding: 6px 10px; min-width: 0; max-width: 156px; }
@@ -142,7 +144,7 @@
   }
   #start h1 {
     font-size: 72px; font-weight: 900; font-style: italic; letter-spacing: 4px;
-    background: linear-gradient(180deg, #ffd24a, #e8732a);
+    background: linear-gradient(180deg, #ffe08a, #ef9b4a 55%, #3eb8ad);
     -webkit-background-clip: text; background-clip: text; color: transparent;
     text-shadow: none; filter: drop-shadow(4px 4px 0 #000);
   }
@@ -168,7 +170,19 @@
   .charcard .cname { font: 800 16px Arial; letter-spacing: 1px; color: #fff; }
   .charcard .ctag { font: 600 10px Arial; color: #9fb2c8; margin: 3px 0 6px; }
   .charcard .swatch { height: 28px; border-radius: 5px; margin-bottom: 6px; }
-  .charcard .stat { font: 600 9px Arial; color: #cfd8e3; line-height: 1.5; }
+  #charcard .stat { font: 600 9px Arial; color: #cfd8e3; line-height: 1.5; }
+  #lifecreator { width: min(560px, 92vw); margin: 10px auto 4px; padding: 12px 14px; box-sizing: border-box; background: rgba(0,0,0,.36); border: 1px solid rgba(62,184,173,.35); border-radius: 10px; text-align: left; }
+  #lifecreator .creator-title { color: #3eb8ad; font: 800 11px Arial; letter-spacing: 2px; margin-bottom: 8px; }
+  #lifecreator .creator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  #lifecreator label { color: #aebed0; font: 700 10px Arial; letter-spacing: 1px; }
+  #lifecreator select { display: block; width: 100%; margin-top: 5px; padding: 8px 9px; color: #fff; background: #17222b; border: 1px solid rgba(255,255,255,.2); border-radius: 6px; font: 700 12px Arial; }
+  #life-brief { margin-top: 9px; color: #dfe7ef; font: 600 11px/1.45 Arial; }
+  @media (max-width: 700px), (max-height: 620px) {
+    #lifecreator { padding: 9px 10px; margin-top: 7px; }
+    #lifecreator .creator-grid { gap: 6px; }
+    #lifecreator select { padding: 7px 6px; font-size: 11px; }
+    #life-brief { font-size: 10px; }
+  }
   @media (max-width: 700px), (max-height: 620px) {
     .charcard { width: 96px; padding: 8px 5px; }
     .charcard .cname { font-size: 13px; }
@@ -227,7 +241,8 @@
     </div>
     <div id="bottomleft">
       <div id="healthwrap"><div id="health"></div></div>
-      <canvas id="minimap" width="176" height="176"></canvas>
+      <canvas id="minimap" width="186" height="186"></canvas>
+      <div id="minimapTitle">MAINLAND MAP</div>
     </div>
     <div id="speed">0 <small>MPH</small></div>
     <div id="weapon">PISTOL</div>
@@ -254,18 +269,37 @@
 
   <div id="mobile-vitals" aria-label="Health and ammunition">
     <div class="vitals-row"><span class="vitals-label">HEALTH</span><strong id="mobile-health-value" class="vitals-value">100</strong></div>
-    <div id="mobile-health-track"><div id="mobile-health-fill"></div></div>
     <div class="vitals-row"><span id="mobile-ammo-label">PISTOL</span><strong id="mobile-ammo-value" class="vitals-value">∞</strong></div>
   </div>
 
   <div id="start">
-    <h1>OPEN CITY</h1>
-    <div style="font:800 12px Arial;color:#ffd24a;letter-spacing:4px;margin:-6px 0 4px">👑 FINAL EDITION</div>
-    <div class="tag">Swing · Drive · Fly — a GTA-style open world in your browser</div>
+    <h1>THE MAINLAND</h1>
+    <div style="font:800 12px Arial;color:#ffd24a;letter-spacing:4px;margin:-6px 0 4px">MAINLAND PROTOTYPE</div>
+    <div class="tag">Your City. Your People. Your Story.</div>
+    <div style="max-width:560px;color:#b8c7d5;font:600 12px/1.6 Arial;letter-spacing:.4px;margin:-12px auto 18px;">
+      A fictionalized Lagos-inspired urban-life RPG in development — build a life, earn your place, and see what the city remembers.
+    </div>
 
     <div id="charpick">
-      <div class="chartitle">CHOOSE YOUR SLINGER</div>
+      <div class="chartitle">CREATE YOUR MAINLAND CHARACTER</div>
       <div id="charrow"></div>
+    </div>
+
+    <div id="lifecreator">
+      <div class="creator-title">STARTING LIFE</div>
+      <div class="creator-grid">
+        <label>BACKGROUND<select id="background-select">
+          <option value="hustler">Street Hustler</option>
+          <option value="trader">Market Trader</option>
+          <option value="office">Office Starter</option>
+        </select></label>
+        <label>FIRST GOAL<select id="goal-select">
+          <option value="steady">Find steady income</option>
+          <option value="home">Secure a better home</option>
+          <option value="business">Build a small business</option>
+        </select></label>
+      </div>
+      <div id="life-brief"></div>
     </div>
 
     <button id="playbtn">▶ PLAY</button>
@@ -289,11 +323,11 @@
     </div>
 
     <div class="panel" id="p-features">
-      <div class="feat"><b>🕸️ Spider-traversal</b> Web-swing across the city, zip to rooftops, wall-run, web-parachute, trampolines, and a style meter that pays cash.</div>
-      <div class="feat"><b>🚗 Drive & fly</b> Steal cars, ride motorbikes, fly helicopters, buy a supercar — nitro boost and stunt ramps included.</div>
-      <div class="feat"><b>🔫 Combat</b> Pistol, machine gun, shotgun, sniper (with scope), RPG, grenades, melee combos, web-yank finishers, and a dodge roll.</div>
-      <div class="feat"><b>⭐ Heat</b> 5-star chase: cops → drones → SWAT → a stealable army tank.</div>
-      <div class="feat"><b>🎯 Mission types</b> Deliveries, street races vs AI, sky-ring swing races, taxi, heists, vigilante chases in a stolen cop car, a boss chopper, and a rival web-slinger.</div>
+      <div class="feat"><b>🏙️ Living district</b> A fictionalized Lagos-inspired city foundation with streets, traffic, landmarks, pedestrians, and places to build a life.</div>
+      <div class="feat"><b>💼 Everyday ambition</b> The prototype is being rebuilt around jobs, income, rent, housing, relationships, and the choices that shape your reputation.</div>
+      <div class="feat"><b>🗣️ Social consequences</b> Gossip, disputes, secrets, romance, betrayal, and neighbourhood pressure will make the city react to what you do.</div>
+      <div class="feat"><b>🤝 Multiplayer direction</b> The target is a shared city where other players, NPC routines, and city events continue beyond your own story.</div>
+      <div class="feat"><b>🧭 Build in progress</b> This preview still contains legacy systems while the first Mainland life loop replaces them one outcome at a time.</div>
       <div class="feat"><b>🃏 Crime pays</b> Blackjack, slots, roulette AND five-card poker at the Lucky 7, a lottery kiosk, a daily bank heist, a roaming armored cash truck, bounty contracts, turf raids — and REX the dog, who fetches cash, barks at cops and bites on command (Z).</div>
       <div class="feat"><b>🚀 Jetpack</b> Buy it near spawn ($5000), press J and fly — plus a BASE-jump ring trial off the Spire and 10 golden sky hoops to thread.</div>
       <div class="feat"><b>🥊 Night life</b> Bare-knuckle fight club on the waterfront after 21:00 (fists and webs only), ambulance rescues, harbor vehicle exports — and strange lights over the Spire past midnight.</div>

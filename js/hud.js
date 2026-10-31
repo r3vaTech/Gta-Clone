@@ -10,7 +10,6 @@ export function initHUD() {
     clock: document.getElementById('clock'),
     stars: document.getElementById('stars').children,
     health: document.getElementById('health'),
-    mobileHealthFill: document.getElementById('mobile-health-fill'),
     mobileHealthValue: document.getElementById('mobile-health-value'),
     mobileAmmoLabel: document.getElementById('mobile-ammo-label'),
     mobileAmmoValue: document.getElementById('mobile-ammo-value'),
@@ -134,8 +133,6 @@ export function updateHUD(world) {
     : 'linear-gradient(90deg,#b03030,#e05f5f)';
   els.health.style.width = hpPct + '%';
   els.health.style.background = hpColor;
-  els.mobileHealthFill.style.width = hpPct + '%';
-  els.mobileHealthFill.style.background = hpColor;
   els.mobileHealthValue.textContent = Math.round(hp);
 
   if (player.inCar || player.inHeli || player.inBoat) {
@@ -261,7 +258,7 @@ function drawMinimap(world) {
   }
 
   // robbable stores
-  if (world.shops) {
+  if (world.shops && world.mapDetails !== false) {
     for (const s of world.shops) {
       const [mx, mz] = toMap(s.pos.x, s.pos.z);
       g.fillStyle = s.cd > 0 ? '#5a5a60' : '#2fd06a';
@@ -270,7 +267,7 @@ function drawMinimap(world) {
   }
 
   // tanks
-  if (world.tanks) {
+  if (world.tanks && world.mapDetails !== false) {
     for (const t of world.tanks) {
       if (t.dead) continue;
       const [mx, mz] = toMap(t.pos.x, t.pos.z);
@@ -280,10 +277,56 @@ function drawMinimap(world) {
   }
 
   // pickups
-  for (const pk of world.pickups) {
+  if (world.mapDetails !== false) for (const pk of world.pickups) {
     const [mx, mz] = toMap(pk.pos.x, pk.pos.z);
     g.fillStyle = pk.type === 'money' ? '#5fe07a' : pk.type === 'ammo' ? '#ffc94a' : '#e05f5f';
     g.fillRect(mx - 1.5, mz - 1.5, 3, 3);
+  }
+
+  // Mainland navigation mode: keep the first-time map legible by hiding legacy
+  // activity clutter until the player explicitly opens the full map.
+  if (world.mapDetails === false) {
+    const drawPlayer = () => {
+      const p = world.player.inCar || world.player.inHeli || world.player.inBoat || world.player;
+      const [mx, mz] = toMap(p.pos.x, p.pos.z);
+      const h = p === world.player ? world.player.heading : p.heading;
+      g.save();
+      g.translate(mx, mz);
+      g.rotate(Math.PI - h);
+      g.fillStyle = '#fff';
+      g.strokeStyle = '#101820';
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(0, -8); g.lineTo(6, 6); g.lineTo(0, 3); g.lineTo(-6, 6); g.closePath();
+      g.fill(); g.stroke();
+      g.restore();
+    };
+    if (world.mall?.door) {
+      const [gx, gz] = toMap(world.mall.door.x, world.mall.door.z);
+      const [px, pz] = toMap(world.player.pos.x, world.player.pos.z);
+      g.save();
+      g.strokeStyle = 'rgba(73,208,192,.88)';
+      g.lineWidth = 2;
+      g.setLineDash([4, 3]);
+      g.beginPath(); g.moveTo(px, pz); g.lineTo(gx, gz); g.stroke();
+      g.setLineDash([]);
+      g.fillStyle = '#49d0c0';
+      g.strokeStyle = '#071217';
+      g.lineWidth = 2;
+      g.beginPath(); g.arc(gx, gz, 6, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.fillStyle = '#071217';
+      g.font = '900 9px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText('G', gx, gz + 0.5);
+      g.fillStyle = '#fff';
+      g.font = '800 9px Arial'; g.textAlign = 'left';
+      g.fillText('GALLERIA', gx + 9, gz - 7);
+      g.restore();
+    }
+    g.fillStyle = 'rgba(255,255,255,.86)';
+    g.font = '900 10px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText('N', size / 2, 10);
+    drawPlayer();
+    return;
   }
 
   // mission blips: yellow = mission start, pink = live objective
