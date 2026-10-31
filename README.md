@@ -17,7 +17,7 @@ The active development branch is `our-build`. The current build focuses on:
 - Enterable residential, shop, and office building shells with restricted actions by building type.
 - A grounded character creator with backgrounds, starter goals, and saved life-profile data.
 - A first Mainland starter shift: sign up at the Galleria, collect a package, deliver it across the district, receive a wallet payout, and save completed-shift progress.
-- A reference-inspired Mainland activity card that shows the current shift, route, step progress, and reward without covering navigation controls.
+- A reference-inspired HUD shell with dark status cards, amber/teal accents, top-right minimap, compact vitals, collapsible quick actions, and a Mainland activity card showing shift, route, progress, and reward without covering navigation controls.
 
 The next planned step is to extend the first life loop with expenses and renting, then return to NPC routines and social consequences.
 

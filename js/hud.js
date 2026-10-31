@@ -42,6 +42,26 @@ export function initHUD() {
   };
   mapCtx = els.minimap.getContext('2d');
 
+  document.querySelectorAll('#bottom-dock button[data-hotkey]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const code = button.dataset.hotkey;
+      if (!code) return;
+      const key = code.startsWith('Key') ? code.slice(3).toLowerCase() : code;
+      window.dispatchEvent(new KeyboardEvent('keydown', { code, key, bubbles: true }));
+      window.dispatchEvent(new KeyboardEvent('keyup', { code, key, bubbles: true }));
+    });
+  });
+  const dock = document.getElementById('bottom-dock');
+  const dockToggle = document.getElementById('dock-toggle');
+  if (document.body.classList.contains('touch')) dock?.classList.add('is-collapsed');
+  dockToggle?.addEventListener('click', () => {
+    const collapsed = dock?.classList.toggle('is-collapsed');
+    if (dockToggle) {
+      dockToggle.innerHTML = `<span class="dock-icon">${collapsed ? '⌃' : '⌄'}</span>${collapsed ? 'SHOW' : 'DOCK'}`;
+      dockToggle.setAttribute('aria-label', collapsed ? 'Show quick actions' : 'Collapse quick actions');
+    }
+  });
+
   // news ticker along the bottom edge
   const news = document.createElement('div');
   news.id = 'news';

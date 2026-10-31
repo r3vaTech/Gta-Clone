@@ -26,7 +26,7 @@ The first URL is spelled `The-mainlanf` in GitHub and is a valid repository. The
 
 ## Applied to this build
 
-The first adapted pass adds a compact **MAINLAND HUSTLE** activity card to the plain Three.js HUD. It shows the current shift number, Galleria route, pickup/delivery step, progress bar, and reward without covering the map or mobile controls.
+The adapted pass now reshapes the plain Three.js HUD shell: dark zinc status cards, amber/teal accents, cash/time/wanted status, a top-right minimap, a compact player-vitals card, a collapsible bottom quick-action dock, and a **MAINLAND HUSTLE** activity card. The activity card shows the current shift number, Galleria route, pickup/delivery step, progress bar, and reward without covering the map or mobile controls.
 
 The starter-job implementation remains native to this repository. It does not copy the React/Vite application or its assets. Future selected adaptations are vehicle profiles/upgrades, named map destinations, a collapsible quick-action surface, and focused smoke checks.
 

@@ -16,13 +16,32 @@
   #bigmap { z-index: 60 !important; }
   #bigmap canvas { position: relative; z-index: 61; pointer-events: auto; }
 
+  #hud { position: fixed; inset: 0; z-index: 6; pointer-events: none; color: #f3f4f6; font-family: Arial, sans-serif; }
+  #topright { position: absolute; left: 16px; top: 16px; display: flex; align-items: stretch; gap: 8px; pointer-events: none; }
+  #money, #clock, #stars { background: rgba(8,10,14,.88); border: 1px solid rgba(113,113,122,.55); box-shadow: 0 8px 20px rgba(0,0,0,.24); }
+  #money { min-width: 122px; padding: 10px 13px 8px; border-radius: 14px; color: #8ee7a7; font-size: 21px; font-weight: 900; letter-spacing: .3px; }
+  #money::before { content: 'CASH IN POCKET'; display: block; margin-bottom: 2px; color: #9ca3af; font-size: 8px; font-weight: 800; letter-spacing: 1.4px; }
+  #clock { align-self: center; padding: 10px 11px; border-radius: 11px; color: #f4c84a; font-size: 12px; font-weight: 800; letter-spacing: .7px; }
+  #clock::before { content: 'DAY / TIME  '; color: #9ca3af; font-size: 8px; letter-spacing: 1px; }
+  #stars { align-self: center; padding: 8px 9px; border-radius: 11px; color: #4b5563; font-size: 13px; letter-spacing: 1px; }
+  #stars span.lit { color: #f87171; text-shadow: 0 0 8px rgba(248,113,113,.45); }
+
+  #status-right { position: absolute; top: 16px; right: 16px; width: 194px; padding: 11px 12px; box-sizing: border-box; background: rgba(8,10,14,.88); border: 1px solid rgba(113,113,122,.55); border-radius: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.24); pointer-events: none; }
+  #status-right .status-heading { display: flex; justify-content: space-between; color: #9ca3af; font-size: 8px; font-weight: 800; letter-spacing: 1.4px; }
+  #status-right .status-heading strong { color: #49d0c0; }
+  #status-right .status-bar { height: 6px; margin-top: 8px; overflow: hidden; border-radius: 99px; background: #27272a; }
+  #status-right .status-bar #health { height: 100%; width: 100%; }
+  #status-right .status-footer { display: flex; justify-content: space-between; margin-top: 8px; color: #d1d5db; font-size: 10px; font-weight: 800; letter-spacing: .6px; }
+  #status-right .status-footer span:last-child { color: #f4c84a; }
+  #status-right #weapon { position: static; right: auto; bottom: auto; color: #f4c84a; font-size: 10px; font-style: normal; letter-spacing: .5px; text-shadow: none; }
+
   #healthwrap {
     width: 176px; height: 12px; margin-bottom: 8px; border: 2px solid rgba(255,255,255,.75);
     border-radius: 6px; background: rgba(0,0,0,.55); overflow: hidden;
   }
   #health { height: 100%; width: 100%; background: linear-gradient(90deg,#2faf4e,#5fe07a); transition: width .15s; }
 
-  #bottomleft { position: absolute; left: 16px; bottom: 16px; width: 202px; height: 202px; padding: 8px; box-sizing: border-box; border-radius: 50%; background: rgba(7,12,17,.88); border: 2px solid rgba(255,255,255,.45); box-shadow: 0 5px 22px rgba(0,0,0,.52), 0 0 0 1px rgba(73,208,192,.28); overflow: hidden; }
+  #bottomleft { position: absolute; right: 16px; top: 126px; width: 202px; height: 202px; padding: 8px; box-sizing: border-box; border-radius: 50%; background: rgba(7,12,17,.88); border: 2px solid rgba(255,255,255,.45); box-shadow: 0 5px 22px rgba(0,0,0,.52), 0 0 0 1px rgba(73,208,192,.28); overflow: hidden; }
   #minimap { display: block; width: 186px; height: 186px; border-radius: 50%; background: #17202b; }
   #minimapTitle { position: absolute; top: 12px; left: 0; right: 0; color: rgba(255,255,255,.78); font: 800 9px Arial; letter-spacing: 2px; text-align: center; pointer-events: none; text-shadow: 1px 1px 2px #000; }
 
@@ -125,12 +144,25 @@
   #life-card .life-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 7px; color: #9fb2c8; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
   #life-card .life-reward { color: #8ee7a7; font-size: 12px; letter-spacing: .3px; }
 
+  #bottom-dock { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; max-width: min(94vw, 660px); padding: 7px; overflow-x: auto; border: 1px solid rgba(113,113,122,.55); border-radius: 18px; background: rgba(8,10,14,.9); box-shadow: 0 10px 30px rgba(0,0,0,.38); pointer-events: auto; }
+  #bottom-dock button { min-width: 58px; height: 48px; padding: 4px 7px; color: #d1d5db; background: rgba(24,24,27,.9); border: 1px solid rgba(113,113,122,.42); border-radius: 10px; cursor: pointer; font: 800 9px/1.15 Arial; letter-spacing: .5px; transition: .15s ease; }
+  #bottom-dock button:hover, #bottom-dock button:focus-visible { color: #f4c84a; border-color: rgba(244,200,74,.75); background: rgba(39,39,42,.96); transform: translateY(-2px); outline: none; }
+  #bottom-dock button .dock-icon { display: block; margin-bottom: 3px; color: #49d0c0; font-size: 16px; }
+  #bottom-dock button[data-hotkey="KeyM"] .dock-icon, #bottom-dock button[data-hotkey="KeyJ"] .dock-icon { color: #f4c84a; }
+  #bottom-dock.is-collapsed button:not(#dock-toggle) { display: none; }
+  #dock-toggle { min-width: 38px !important; color: #9ca3af !important; }
+
   /* touch devices: keep HUD readable above a small, intentional control set */
   body.touch #keysind { display: none; }
   body.touch #mobile-vitals { display: block; }
   body.touch #healthwrap { display: none; }
   body.touch #hint { bottom: auto; top: 76px; font-size: 13px; max-width: 70vw; }
   body.touch #bottomleft { transform: scale(0.76); transform-origin: top right; top: 58px; right: 8px; bottom: auto; left: auto; }
+  body.touch #topright { left: 8px; top: 8px; transform: scale(.82); transform-origin: top left; }
+  body.touch #status-right { top: 8px; right: 8px; transform: scale(.82); transform-origin: top right; width: 176px; }
+  body.touch #bottomleft { top: 116px; }
+  body.touch #bottom-dock { bottom: 10px; gap: 4px; padding: 5px; }
+  body.touch #bottom-dock button { min-width: 49px; height: 42px; font-size: 8px; }
   body.touch #weapon { right: 18px; bottom: 198px; font-size: 15px; }
   body.touch #speed { right: 18px; bottom: 170px; font-size: 22px; }
   body.touch #mission { left: 10px; top: 58px; padding: 6px 10px; min-width: 0; max-width: 156px; }
@@ -261,13 +293,16 @@
       <div id="clock">10:00</div>
       <div id="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
     </div>
+    <div id="status-right">
+      <div class="status-heading"><span>PLAYER VITALS</span><strong>ACTIVE</strong></div>
+      <div class="status-bar"><div id="health"></div></div>
+      <div class="status-footer"><span>HEALTH</span><div id="weapon">PISTOL</div></div>
+    </div>
     <div id="bottomleft">
-      <div id="healthwrap"><div id="health"></div></div>
       <canvas id="minimap" width="186" height="186"></canvas>
       <div id="minimapTitle">MAINLAND MAP</div>
     </div>
     <div id="speed">0 <small>MPH</small></div>
-    <div id="weapon">PISTOL</div>
     <div id="hint"></div>
     <div id="keysind">
       <span id="k-w">W</span><br>
@@ -292,6 +327,14 @@
       <div class="life-progress"><span id="life-progress-bar"></span></div>
       <div class="life-meta"><span id="life-step">READY TO START</span><strong id="life-reward" class="life-reward">$250</strong></div>
     </div>
+    <nav id="bottom-dock" aria-label="Quick actions">
+      <button id="dock-toggle" type="button" aria-label="Collapse quick actions"><span class="dock-icon">⌄</span>DOCK</button>
+      <button type="button" data-hotkey="KeyM"><span class="dock-icon">⌖</span>MAP</button>
+      <button type="button" data-hotkey="KeyE"><span class="dock-icon">◈</span>WORK</button>
+      <button type="button" data-hotkey="KeyV"><span class="dock-icon">◉</span>CAMERA</button>
+      <button type="button" data-hotkey="KeyR"><span class="dock-icon">♫</span>RADIO</button>
+      <button type="button" data-hotkey="KeyP"><span class="dock-icon">☰</span>MENU</button>
+    </nav>
   </div>
   <div id="vignette"></div>
   <div id="damage"></div>
