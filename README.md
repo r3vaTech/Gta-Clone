@@ -1,232 +1,145 @@
-# OPEN CITY
+# THE MAINLAND
 
-A GTA-style open world **crossed with Spider-Man traversal**, running entirely
-in your browser. No build step, no installs — just Three.js from a CDN and
-plain JavaScript ES modules. Steal cars, fly helicopters, rob stores, fight a
-gang for territory, outrun tanks at five stars... or ignore all of it and
-web-swing between the towers at 200 km/h.
+**Your City. Your People. Your Story.**
 
-Ten "seasons" of updates have piled onto the original open world: zombie
-outbreaks, a kaiju that rises from the harbor, train heists, a mayor's
-office, an empire of owned properties, a casino heist, a subway, a
-nightclub, a chess hustler, ghosts, a boss-rush gauntlet, and dozens more
-side systems described below. The code is plain ES modules — one file per
-system, ~140 of them, all wired into `js/main.js`.
+THE MAINLAND is a realistic, fictionalized 3D urban-life simulator inspired by everyday life in a busy Lagos mainland district. This repository contains the current browser-playable game build: a living city prototype where players will eventually create a character, find work, earn money, rent a home, build relationships, and deal with the consequences of ordinary decisions.
 
-## Run it
+The world is inspired by the energy and street scale of Oshodi, Lagos, but uses fictional locations, characters, businesses, and events.
 
-Any static file server works. The easiest:
+## Current build status
 
-```
+The active development branch is `our-build`. The current build focuses on:
+
+- A readable urban road grid with sidewalks, curbs, lane markings, zebra crossings, and signalized intersections.
+- Traffic cars that follow lanes, rotate with their direction of travel, brake for hazards, respect red and amber signal phases, and use headlights/brake lights.
+- Mobile-friendly HUD and minimap navigation.
+- A visible Galleria landmark with an outward-facing hinged door, readable interior lighting, seating, reception counter, plants, fountain, and kiosk.
+- Enterable residential, shop, and office building shells with restricted actions by building type.
+- A grounded character creator with backgrounds, starter goals, and saved life-profile data.
+
+The next planned step is to refine vehicle handling and street behavior, then return to the first Mainland life loop: starter work, payout, expenses, renting, and persistence.
+
+## Run locally
+
+This is kept as a game build and is not being converted into a permanent hosted website. Run it locally with any static file server:
+
+```bash
 npm start
 ```
 
-(or `npx -y http-server -p 8080 -c-1 .`)
+Or:
 
-Then open **http://localhost:8080** and click PLAY.
+```bash
+npx -y http-server -p 8080 -c-1 . --host 0.0.0.0
+```
+
+Then open `http://localhost:8080` and select **PLAY**.
+
+## Temporary preview
+
+The current development preview is available while the local game server is running:
+
+<https://8080-i35yjs5bj3k6lvpgtsvjr-3a113fa0.us4.manus.computer/>
+
+This URL is temporary and is not the production home of the game.
 
 ## Controls
 
-### On foot & webs
+### On foot
+
 | Input | Action |
 | --- | --- |
-| W A S D | Move (Shift = sprint, Space = jump) |
+| W A S D | Move |
+| Shift | Sprint |
+| Space | Jump |
 | Mouse | Look around / aim |
-| **Right Click (hold)** | Web-swing — release at the front of the arc to fly |
-| **Right Click (tap)** | Zip straight to a rooftop |
-| Space / Shift (mid-swing) | Reel the web in / let it out |
-| **W into a wall (airborne)** | Wall-run up it — Space kicks off |
-| **Q** | Web-shot (again on a webbed enemy = **web-yank** takedown) |
-| **F** | Punch combo on the ground · **web-dash** in the air (level 4) |
-| Double-tap W/A/S/D | Dodge roll with i-frames |
-| C (hold) / T | Charge super-jump / sling a web trampoline |
-| **M** | Full city map — click to set a waypoint |
-| **L** | The LEGEND board — 16-item completion list; 100% crowns you King of the City |
-| **P / Esc** | Pause: settings, lifetime stats, photo mode |
-| Left Click | Shoot |
-| 1–6 / **X** | Pick weapon / cycle: Pistol, MG, Shotgun, Sniper (scoped), RPG, Grenade |
-| **J** | Jetpack on/off (once bought — Space climbs, C drops) |
-| **Z** | Send REX to bite the nearest enemy |
-| E | Enter vehicle / rob store (hold) / casino / bank vault (hold) / bounty board / lotto / fight club |
+| E | Enter or leave vehicles and buildings; interact with nearby actions |
+| M | Open the full city map |
+| P / Esc | Pause |
+| Left Click | Use the currently equipped weapon |
+| 1–6 / X | Select or cycle weapons |
 
 ### Vehicles
+
 | Input | Action |
 | --- | --- |
-| W A S D | Drive / fly / boat |
-| Space | Handbrake / helicopter up |
-| Shift | Helicopter down |
-| **R** | Cycle the car radio (5 procedural stations) |
-| Left Click (in tank) | Fire the cannon |
-| **V** (in a police car) | Start a **vigilante** chase streak |
-| E | Exit — mid-flight in a helicopter it's a **skydive** (hold Space for the chute) |
+| W A S D | Drive |
+| Space | Handbrake |
+| R | Cycle radio station |
+| E | Exit the vehicle when stopped |
+| Left Click | Fire the tank cannon when operating a tank |
 
-### Gamepad
-Plug one in and play: left stick moves, right stick looks, **A** jump/up,
-**B** sprint/down, **X** enter/exit, **Y** web-shot, **LB** radio,
-**RB/LT** web-swing, **RT** shoot.
+### Mobile
 
-## Features
+Use the virtual joystick and contextual action buttons. The minimap is positioned in the top-right navigation area to avoid the movement controls.
 
-### Spider-Man traversal
-- **Web swinging** — physical pendulum on buildings; anchors picked high and
-  ahead so swinging down a street just works. Swing pump builds speed, the
-  rope auto-winches clear of the asphalt, releases slingshot you into a
-  floaty glide with seconds of hang-time to chain the next web.
-- **Zip-to-point**, **wall-running**, rooftop landing with a forgiving
-  superhero roll, and a **style meter**: mid-air catches, fast releases,
-  wall-runs and zips earn points that cash out as money when you land.
-- **Web attack (Q)** pins pedestrians, gangsters, traffic — even cop cars.
+## Road and vehicle realism roadmap
 
-### The city
-- Procedurally generated 64-block dusk city: towers with glowing windows,
-  neon billboards, rooftop clutter, parks, helipads, street lamps.
-- **Day/night cycle** (1 real minute = 1 game hour): the sun sets, windows
-  light up, headlights come on, street lamps glow.
-- **Weather**: rolling rain storms with lightning that dim the sky.
-- Living streets: 70 pedestrians who flee gunfire, AI traffic that brakes,
-  **pigeon flocks** that scatter, **rush-hour and night traffic density**,
-  fewer people out after dark.
+The current realism pass is being built in this order:
 
-### Crime & economy
-- **Rob the corner stores** (green rings, hold E) — cash plus 2-star heat.
-- **The bank job**: crack the City Bank vault (hold E), hold the lobby
-  against guards while the drill runs, then escape a 4-star manhunt to the
-  safehouse beam. Once per in-game day, $3000.
-- **The armored truck**: a 400 HP cash transporter runs routes every few
-  minutes (gold square on the minimap). Wreck it for $1000 plus a ring of
-  spilled cash cubes — and the heat that comes with it.
-- **Vigilante**: steal a police cruiser mid-patrol, press **V**, and chase
-  down fleeing criminals. Every takedown chains a tougher, faster target;
-  payouts escalate and your best streak is saved.
-- **The Lucky 7 casino**: blackjack (hit/stand/double, 3:2 blackjack), a
-  slot machine (7-7-7 jackpot pays 25×) and European roulette (red/black,
-  dozens, or a 36× lucky number) — walk in with E, hop between the games
-  at the table.
-- **Property raids**: own real estate and crooks will come for it — a crew
-  hits your casino/stadium/Spire every few minutes. Wipe them out for cash
-  and rep, or the place gets ransacked and pays no income for the day.
-- **Gang territory**: the Vipers hold the north-east district and shoot on
-  sight. Put ten of them down to seize the turf — then defend it when the
-  **Jackals raid** in periodic turf wars, or lose the district again.
-- **REX the dog**: adopt him at the kennel near spawn ($500). He follows
-  you across the city, fetches money pickups, and barks when cops close in.
-- **Odd jobs & toys everywhere**: ambulance rescues, harbor vehicle exports,
-  bounty contracts with bodyguards, a bare-knuckle **fight club** on the
-  waterfront after dark, a lottery kiosk, **five-card poker** at the casino,
-  a **jetpack** shop, BASE-jump ring trials off the Spire, ten golden sky
-  hoops — and strange lights over the Spire past midnight.
-- **The WEB DEN** near spawn sells permanent upgrades: longer webs, faster
-  winch, body armor (150 HP).
-- Money & health pickups, ammo crates, and a style meter that pays for flair.
+1. Road scale, lane readability, sidewalks, curbs, crossings, and intersections.
+2. Signalized intersections and traffic stopping behavior.
+3. Vehicle proportions, wheel contact, acceleration, braking, steering, reversing, and collision response.
+4. Traffic spacing, parked-car placement, turn behavior, and street-side vehicle interactions.
+5. Return to the Mainland life loop and connect streets to jobs, housing, money, and daily consequences.
 
-### Wanted system
-- 5 stars of escalation: police cruisers ram and corner you, the **police
-  helicopter** with a door gunner arrives at 3 stars, and at **5 stars the
-  army sends a tank** — 600 HP, live cannon... and stealable. Left-click
-  fires shells while you drive it.
+## Mainland product roadmap
 
-### Vehicles
-- Steal any car — arcade physics, handbrake drifts with **skid marks** and
-  tyre smoke, speed-sensitive FOV.
-- **Motorbikes** (every 4th parked vehicle): fast, nimble, lean into corners.
-- Helicopters on the park helipads. Space to climb — it always wins over a
-  held sprint key.
-- **Boats & jet-skis** at the harbor past the east edge — plus two boat
-  races (Harbor Circuit and Buoy Slalom).
-- **Car radio**: five procedural WebAudio stations (lofi, synthwave, bass,
-  desi, night jazz).
+### Character and first life loop
 
-### Missions — ten types in rotation
-Walk into the yellow beam: **Delivery**, **Street race**, **Swing race**
-(floating sky rings, webs only), **Taxi shift**, **Hit contract**,
-**Boss chopper**, **Firefighter**, **Rooftop hit**, **Witness escort**, and
-a **rival web-slinger** duel. Rewards scale as you complete more — plus
-free-roam races, the stadium arena, the bank heist, vigilante chases and
-turf wars outside the mission beam.
+- Character name, appearance preset, background, and starter goal.
+- A first district with starter jobs and visible payouts.
+- Wallet, expenses, rent, housing, and saved progress.
+- Readable minimap landmarks and accessible buildings.
 
-### Beyond the basics (Seasons 2–10)
-Ten waves of updates layered a second game's worth of systems on top of the
-core loop above. A sample of what's actually in `js/`, all reachable in a
-normal playthrough:
-- **Boss fights & events**: a rival **nemesis** web-slinger, a **kaiju** that
-  wades out of the harbor on stormy nights, a **zombie outbreak** after dark,
-  a **war-mech boss rush**, and city-wide **disasters** (forced via cheat or
-  random).
-- **Heists & crime careers**: a **train heist**, a **casino heist**, a
-  **jewelry store job**, a **drug lab raid**, a **black-market arms dealer**,
-  a **repo man** side gig, and an undercover **cop career** you can take
-  instead of a life of crime (complete with **prison** intake if you get
-  caught).
-- **City institutions**: a **mayor's office** and city **empire** (buy up
-  properties for passive income), a **stock market**, a **museum** heist, a
-  **nightclub**, a **subway/metro**, a **crew** you can recruit, a
-  **syndicate** campaign, and a rotating **calendar** of city events.
-- **Odd jobs**: **taxi driving**, **pizza delivery**, **valet parking**,
-  **car wash**, **barber shop**, **ferry** routes, **ice cream truck**,
-  **news helicopter** ride-alongs, **storm chasing**, **busking** for tips,
-  a gun **workbench**, **fishing**, a **gym**, a **fortune teller**, **dice**
-  games, and a **hobo** you can hand money to.
-- **Traversal toys**: **wingsuit**, **skydiving**, **base jumping**,
-  **ziplines**, a hot-air **balloon**, a **drone**, a **skateboard** and
-  **trick park**, a **derby** (demolition-style), and street **elevators**.
-- **World detail**: **ATMs**, **payphones** (with side jobs), **graffiti**
-  tagging, **fire hydrants**, **speed cameras**, parking **meters**, **NPC
-  emotes**, **wildlife**, **ghosts** at night, and vehicle **damage/tuning
-  effects**.
-- **Meta systems**: **prestige** (reset for permanent perks), **perks**,
-  **bribes** and a **lawyer** to clear your wanted level, a **pink slip**
-  (car-ownership) racing mode, a **most wanted** board, a **bounty** system,
-  a **bodyguard** you can hire, **tournament** and **poker tournament**
-  brackets, an **explorer** log, and **cheat codes** (see the pause menu).
+### Living city and social consequences
 
-This list still isn't exhaustive — check `js/` for the full set of ~140
-feature modules, each one self-contained and imported into `js/main.js`.
+- NPC routines tied to the shared city clock.
+- Relationships, gossip, and one spreading scandal event.
+- A landlord dispute with dialogue choices.
+- A law encounter with visible consequences.
 
-### Progression
-- **XP levels** unlock skills: double-jump (2), web-dash (4), slow-motion
-  airborne aim (6), parkour sprint (8).
-- **Wardrobe suits** with perks: Classic (+50% style), Symbiote (2x melee,
-  10s webs), Stealth (heat fades twice as fast).
-- **Lifetime stats and 10 achievements**, all in the pause menu.
+### Multiplayer foundation
 
-### Tech
-- **Playable on phones**: virtual joystick + buttons, and it's a **PWA** —
-  add to home screen, runs full-screen, works offline after the first load.
-- Pause menu with volume / sensitivity / invert-Y / low-graphics settings,
-  **photo mode** with filters, full-screen map with waypoints, chase music
-  that swells with the wanted level, NPC speech bubbles, intro flyover.
-- Procedural WebAudio everything — guns, explosions, engines, sirens, rotor
-  thump, thunder, mission stingers, radio. Zero audio files.
-- Post-processing bloom, ACES tone mapping, PMREM reflections.
-- Autosave to localStorage: money, missions, ammo, upgrades, territory.
-- WASTED / BUSTED screens, HUD with minimap (cops, choppers, stores, gang
-  turf, tanks), live WASD key indicator.
+The multiplayer layer will be added after the first single-player vertical slice is stable. The intended first networked room is bounded to approximately 8–16 active players, with server-owned room membership, shared events, validated actions, persistence, reconnect handling, and an explicit unavailable-service state.
 
-## Tech stack
-- **[Three.js](https://threejs.org/)** r170, loaded straight from a CDN via
-  an `importmap` in `index.html` — no bundler, no `node_modules` for the
-  game itself.
-- Plain **JavaScript ES modules**, one file per system, imported directly by
-  the browser.
-- **Procedural WebAudio** for every sound effect and the car radio — no
-  audio files ship with the game.
-- **[Playwright](https://playwright.dev/)** (`playwright-core`) is the one
-  `devDependency`, used only by the scripts in `test/` to drive the game
-  headlessly and assert features work; it isn't needed to play.
+## Version control
+
+Development work is tracked on the `our-build` branch. Each meaningful feature pass should include:
+
+1. A focused implementation.
+2. Syntax and diff validation.
+3. A README or TODO update when the product state changes.
+4. A descriptive Git commit.
+5. A push to the GitHub fork.
+
+Latest published commit: `8c46f0c Improve Mainland roads and traffic realism`
+
+Repository: <https://github.com/r3vaTech/Gta-Clone/tree/our-build>
 
 ## Project structure
-```
-index.html   HUD, start screen, styles, Three.js import map
-manifest.json / sw.js   PWA manifest + offline service worker
-js/main.js   Game loop, player, camera, swinging/zipping, shooting, style
-js/          ~140 self-contained feature modules (one per system — cars,
-             police, heists, missions, side jobs, etc.), all imported by
-             js/main.js. See "Beyond the basics" above for what's in here.
-test/        Playwright smoke tests that drive the game in a real browser
-             and assert individual features work (run against a local
-             server, e.g. `node test/featurecheck.mjs`).
-PLAYSTORE.md How to package the PWA as an Android app (Trusted Web Activity)
-             for the Google Play Store.
-privacy.html Privacy policy page (required for Play Store / PWA install).
+
+```text
+index.html       HUD, start screen, styles, and Three.js import map
+js/main.js       Game loop, player, camera, vehicles, world state, persistence
+js/city.js       Roads, sidewalks, buildings, intersections, street props
+js/car.js        Vehicle meshes, driving physics, wheels, lights, collisions
+js/npc.js        Pedestrians, traffic spawning, traffic behavior
+js/mall.js       Galleria landmark, door, interior, and interactions
+js/buildings.js  Generic enterable residential/shop/office interiors
+js/hud.js        HUD, minimap, mobile navigation, and status panels
+TODO.md          Outcome-based product roadmap and current priorities
+plan.md          Conversion plan for THE MAINLAND
 ```
 
+## Tech stack
+
+- Three.js loaded from a CDN through the import map in `index.html`.
+- Plain JavaScript ES modules.
+- Procedural WebAudio for game sound.
+- LocalStorage for prototype progress persistence.
+- Static local serving for the development game build.
+
+## Credits and source base
+
+THE MAINLAND is being developed as a custom game build from the public `25nyak/Gta-Clone` codebase. The active development fork is maintained at `r3vaTech/Gta-Clone`.
