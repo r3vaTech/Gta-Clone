@@ -74,7 +74,7 @@ export function createCarMesh(color, opts = {}) {
     lightbar.blue = blue;
   }
 
-  return { group, wheels, lightbar };
+  return { group, wheels, lightbar, lights: { headlights: [hl, hr], tail: [tl, tr] } };
 }
 
 // Slim, fast motorbike facing +z.
@@ -111,7 +111,7 @@ export function createBikeMesh(color) {
 // Standard vehicle object used by player cars, parked cars, traffic and police.
 // Note: `pos` aliases mesh.position so writes to pos move the mesh.
 export function makeVehicle(scene, x, z, heading, color, opts = {}) {
-  const { group, wheels, lightbar } = opts.bike ? createBikeMesh(color) : createCarMesh(color, opts);
+  const { group, wheels, lightbar, lights } = opts.bike ? createBikeMesh(color) : createCarMesh(color, opts);
   if (opts.monster) { // jack the body up on big wheels
     group.scale.set(1.25, 1.35, 1.25);
     for (const w of wheels) w.scale.setScalar(1.8);
@@ -123,6 +123,7 @@ export function makeVehicle(scene, x, z, heading, color, opts = {}) {
     mesh: group,
     wheels,
     lightbar,
+    lights: lights || null,
     pos: group.position,
     heading,
     vel: new THREE.Vector3(),
@@ -138,6 +139,17 @@ export function makeVehicle(scene, x, z, heading, color, opts = {}) {
     top: opts.top ?? (opts.bike ? 55 : undefined),
     rad: opts.rad ?? (opts.bike ? 0.9 : undefined),
   };
+}
+export function setVehicleLights(v, night = false, braking = false) {
+  if (!v?.lights) return;
+  for (const lamp of v.lights.headlights) {
+    lamp.material.emissiveIntensity = night ? 2.1 : 0.18;
+    lamp.material.color.set(night ? 0xfff4c2 : 0xfff7cc);
+  }
+  for (const lamp of v.lights.tail) {
+    lamp.material.emissiveIntensity = braking ? 2.5 : 0.25;
+    lamp.material.color.set(braking ? 0xff2418 : 0xaa1111);
+  }
 }
 
 const _fwd = new THREE.Vector3();

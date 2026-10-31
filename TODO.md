@@ -1,5 +1,12 @@
 # THE MAINLAND delivery outcomes
 
+## Current priority — realism pass before TODO continuation
+- Keep the project as a game build and do not convert or publish it as a permanent website.
+- Improve the road system first: lane readability, intersections, sidewalks, traffic flow, and street-scale visual detail.
+- Improve the car system second: believable proportions, wheel/road contact, lighting, braking, acceleration, steering, and traffic behavior.
+- Add visible signalized intersections and make traffic respect red and amber phases.
+- Return to the Mainland life-loop outcomes after the road and car pass is accepted.
+
 ## 1. Rebrand and establish the fictionalized Mainland district
 - Replace the current Open City/superhero presentation with THE MAINLAND identity and the tagline “Your City. Your People. Your Story.”
 - Preserve a realistic, fictionalized Oshodi-inspired district direction without copying real private individuals or protected brand marks.

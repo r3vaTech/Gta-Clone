@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { initInput, endFrame, pollGamepad, keys, pressed, mouse } from './input.js';
 import { buildCity, resolveCircle, pointBlocked, groundHeight, blockStart, BLOCK, HALF, N } from './city.js';
 import { createCharacter, animateWalk, animateIdle, animateLand, CHARACTERS } from './characters.js';
-import { physStep, separateCars, darkenCar } from './car.js';
+import { physStep, separateCars, darkenCar, setVehicleLights } from './car.js';
 import { spawnPeds, updatePeds, killPed, spawnTraffic, updateTraffic, disableTraffic, spawnParked } from './npc.js';
 import { updatePolice, addCrime, copDie, clearCops } from './police.js';
 import { makeHeli, physStepHeli, spinRotors, explodeHeli, updateFallingHeli, updatePoliceHelis } from './heli.js';
@@ -266,6 +266,8 @@ const world = {
   busted: false,
   money: save.money || 0,
   mapDetails: false,
+  cameraYawTarget: null,
+  cameraYawT: 0,
   lifeBackground: save.lifeBackground || 'hustler',
   lifeGoal: save.lifeGoal || 'steady',
   rentDue: save.rentDue || 300,
@@ -814,6 +816,13 @@ function updateCamera(dt) {
   const inv = world.settings.invertY ? -1 : 1;
   camYaw -= mouse.dx * 0.0024 * sens;
   camPitch = Math.max(-0.35, Math.min(0.75, camPitch + mouse.dy * 0.0018 * sens * inv));
+  if (world.cameraYawT > 0 && world.cameraYawTarget != null) {
+    let diff = world.cameraYawTarget - camYaw;
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    camYaw += diff * Math.min(1, 4 * dt);
+    world.cameraYawT -= dt;
+  }
   if (keys['ArrowLeft']) camYaw += 1.8 * dt;
   if (keys['ArrowRight']) camYaw -= 1.8 * dt;
 
@@ -1990,6 +1999,7 @@ function updateDriving(dt) {
   }
 
   const impact = physStep(car, ctl, dt, city.colliders);
+  setVehicleLights(car, world.clock >= 19 || world.clock < 6, ctl.throttle < -0.05 || car.vel.length() < 1.2);
   checkRamp(stuntsState, world, car, dt); // stunt ramps launch fast cars
   if (impact > 8) {
     addFlash(car.pos.clone().setY(1), 0xffcc66, 1.2);

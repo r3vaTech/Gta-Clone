@@ -8,7 +8,7 @@ function addInterior(scene, world) {
   const room = new THREE.Vector3(HALF + 190, 30, 110);
   const floor = new THREE.Mesh(
     new THREE.BoxGeometry(30, 1, 22),
-    new THREE.MeshStandardMaterial({ color: 0x9a8978, roughness: 0.9 })
+    new THREE.MeshStandardMaterial({ color: 0xb5a58e, roughness: 0.84 })
   );
   floor.position.set(room.x, 29.5, room.z);
   scene.add(floor);
@@ -20,9 +20,12 @@ function addInterior(scene, world) {
     if (rot) wall.rotation.y = Math.PI / 2;
     scene.add(wall);
   }
-  const light = new THREE.PointLight(0xffd99a, 1.8, 40);
+  const light = new THREE.PointLight(0xffd99a, 3.4, 42);
   light.position.set(room.x, 35, room.z);
   scene.add(light);
+  const fill = new THREE.HemisphereLight(0xffe4bd, 0x2e414a, 1.1);
+  fill.position.set(room.x, 34, room.z);
+  scene.add(fill);
   const action = new THREE.Mesh(
     new THREE.BoxGeometry(4, 1.1, 1.3),
     new THREE.MeshStandardMaterial({ color: 0x3b8e83, emissive: 0x123f3b, emissiveIntensity: 0.6 })
@@ -56,6 +59,9 @@ export function updateBuildings(world, dt, pressed) {
     if (state.enterT <= 0) {
       player.pos.set(state.interior.room.x - 11, 30.2, state.interior.room.z);
       player.vy = 0;
+      player.heading = Math.PI / 2;
+      world.cameraYawTarget = Math.PI / 2;
+      world.cameraYawT = 1.4;
       showToast(`${TYPE_LABEL[state.active.type]} — actions are limited here`);
     }
     return;

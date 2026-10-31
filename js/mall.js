@@ -46,6 +46,7 @@ export function initMall(scene, world, save) {
     new THREE.MeshBasicMaterial({ color: 0x9fd8f7, transparent: true, opacity: 0.5, side: THREE.DoubleSide })
   );
   glass.position.copy(door).add(new THREE.Vector3(0, 1.6, 0.3));
+  glass.rotation.y = Math.PI;
   scene.add(glass);
   const doorMesh = new THREE.Mesh(
     new THREE.BoxGeometry(2.15, 2.7, 0.12),
@@ -54,6 +55,7 @@ export function initMall(scene, world, save) {
   const doorPivot = new THREE.Group();
   doorPivot.position.copy(door).add(new THREE.Vector3(-1.075, 0, 0.38));
   doorMesh.position.set(1.075, 1.45, 0);
+  doorPivot.rotation.y = Math.PI;
   doorPivot.add(doorMesh);
   scene.add(doorPivot);
   const sign = new THREE.Mesh(
@@ -61,6 +63,7 @@ export function initMall(scene, world, save) {
     new THREE.MeshBasicMaterial({ map: galleriaSignTexture(), side: THREE.DoubleSide })
   );
   sign.position.copy(door).add(new THREE.Vector3(0, 4.35, 0.05));
+  sign.rotation.y = Math.PI;
   scene.add(sign);
   const canopy = new THREE.Mesh(
     new THREE.BoxGeometry(4.1, 0.18, 1.4),
@@ -109,9 +112,12 @@ export function initMall(scene, world, save) {
     if (rot) wall.rotation.y = Math.PI / 2;
     scene.add(wall);
   }
-  const light = new THREE.PointLight(0xfff2d8, 2.4, 46);
+  const light = new THREE.PointLight(0xfff2d8, 4.2, 52);
   light.position.set(room.x, 35.5, room.z);
   scene.add(light);
+  const fill = new THREE.HemisphereLight(0xffe4bd, 0x334b55, 1.35);
+  fill.position.set(room.x, 34, room.z);
+  scene.add(fill);
   // the fountain
   const fountain = new THREE.Mesh(
     new THREE.CylinderGeometry(2, 2.4, 0.8, 12),
@@ -157,13 +163,16 @@ export function updateMall(world, dt, pressed) {
   if (!onFoot) return;
 
   ml.doorOpen = Math.max(0, ml.doorOpen - dt * 1.8);
-  ml.doorPivot.rotation.y = -Math.min(1, ml.doorOpen) * Math.PI * 0.48;
+  ml.doorPivot.rotation.y = Math.PI - Math.min(1, ml.doorOpen) * Math.PI * 0.48;
   if (ml.enterT > 0) {
     ml.enterT -= dt;
     if (ml.enterT <= 0) {
       ml.returnPos = player.pos.clone();
       player.pos.set(ml.room.x - 14, 30.2, ml.room.z);
       player.vy = 0;
+      player.heading = Math.PI / 2;
+      world.cameraYawTarget = Math.PI / 2;
+      world.cameraYawT = 1.4;
       sfxPickup();
       showToast('THE GALLERIA — welcome inside');
     }

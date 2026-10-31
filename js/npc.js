@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { createCharacter, animateWalk, randomOutfit } from './characters.js';
-import { makeVehicle, randomCarColor } from './car.js';
+import { makeVehicle, randomCarColor, setVehicleLights } from './car.js';
 import { resolveCircle, roadCenter, blockStart, HALF, ROAD, BLOCK, N } from './city.js';
 import { addCrime } from './police.js';
 import { addSparks, addSmoke } from './effects.js';
@@ -183,7 +183,7 @@ export function spawnTraffic(scene, city, count) {
 }
 
 export function updateTraffic(world, dt) {
-  const { traffic, player } = world;
+  const { traffic, player, city } = world;
   const pcar = player.inCar;
 
   // every now and then two cars pile into each other on their own
@@ -219,6 +219,9 @@ export function updateTraffic(world, dt) {
   const policy = [0.6, 1, 1.5][world.policy?.traffic ?? 1];
   const flow = ((hour >= 8 && hour < 10) || (hour >= 17 && hour < 19) ? 0.65
     : hour >= 22 || hour < 5 ? 1.35 : 1) / policy;
+  const night = hour >= 19 || hour < 6;
+  const nearestRoad = (value, roads) => roads.reduce((best, road) =>
+    Math.abs(road - value) < Math.abs(best - value) ? road : best, roads[0]);
 
   for (const t of traffic) {
     if (t.dead || !t.ai) continue;
@@ -252,6 +255,19 @@ export function updateTraffic(world, dt) {
     if (!blocked) {
       for (const o of world.cops) if (!o.dead && near(o)) { blocked = true; break; }
     }
+    // A simple coordinated signal phase: vertical traffic gets the first green,
+    // horizontal traffic gets the second, with a short amber all-stop interval.
+    const roadX = nearestRoad(t.pos.x, city.roadXs);
+    const roadZ = nearestRoad(t.pos.z, city.roadZs);
+    const atJunction = Math.abs(t.pos.x - roadX) < ROAD * 0.7 && Math.abs(t.pos.z - roadZ) < ROAD * 0.7;
+    if (atJunction) {
+      const distance = ai.fz !== 0 ? (roadZ - t.pos.z) * ai.fz : (roadX - t.pos.x) * ai.fx;
+      const phase = (world.time + (roadX + roadZ) * 0.01) % 18;
+      const verticalGreen = phase < 7.5;
+      const amber = phase >= 7.5 && phase < 9;
+      const signalGreen = ai.fz !== 0 ? verticalGreen : !verticalGreen;
+      if (distance > 0.8 && distance < 8.5 && (amber || !signalGreen)) blocked = true;
+    }
 
     const target = blocked ? 0 : ai.cruise * flow;
     ai.speed += Math.max(-14 * dt, Math.min(8 * dt, target - ai.speed));
@@ -260,6 +276,9 @@ export function updateTraffic(world, dt) {
     t.pos.x += ai.fx * ai.speed * dt;
     t.pos.z += ai.fz * ai.speed * dt;
     t.vel.set(ai.fx * ai.speed, 0, ai.fz * ai.speed);
+    t.heading = Math.atan2(ai.fx, ai.fz);
+    t.mesh.rotation.y = t.heading;
+    setVehicleLights(t, night, blocked || ai.speed < 1.2);
 
     // wrap around the city
     const W = HALF - 8;

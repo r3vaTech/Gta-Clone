@@ -99,9 +99,17 @@ function roadTexture() {
   g.fillStyle = '#a8954a';
   g.fillRect(62, 8, 4, 48);
   g.fillRect(62, 72, 4, 48);
+  g.fillStyle = '#e2e0d2';
+  g.fillRect(5, 0, 2, 128);
+  g.fillRect(121, 0, 2, 128);
+  g.fillStyle = 'rgba(232,232,224,0.78)';
+  for (let y = 0; y < 128; y += 22) {
+    g.fillRect(31, y, 2, 11);
+    g.fillRect(95, y, 2, 11);
+  }
   g.fillStyle = '#8e8e90';
-  g.fillRect(4, 0, 3, 128);
-  g.fillRect(121, 0, 3, 128);
+  g.fillRect(2, 0, 2, 128);
+  g.fillRect(124, 0, 2, 128);
   const t = new THREE.CanvasTexture(c);
   t.wrapT = THREE.RepeatWrapping;
   t.colorSpace = THREE.SRGBColorSpace;
@@ -206,6 +214,36 @@ export function buildCity(scene) {
     h.rotation.y = Math.PI / 2;
     h.receiveShadow = true;
     scene.add(h);
+  }
+  // raised curbs and zebra crossings give intersections a readable street scale
+  const curbMat = new THREE.MeshStandardMaterial({ color: 0x9b9b98, roughness: 0.88 });
+  for (let i = 0; i <= N; i++) {
+    const cx = roadCenter(i);
+    for (const side of [-1, 1]) {
+      const curb = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.18, CITY), curbMat);
+      curb.position.set(cx + side * (ROAD / 2 + 0.16), 0.12, 0);
+      curb.receiveShadow = true;
+      scene.add(curb);
+      const curbH = new THREE.Mesh(new THREE.BoxGeometry(CITY, 0.18, 0.34), curbMat);
+      curbH.position.set(0, 0.12, cx + side * (ROAD / 2 + 0.16));
+      curbH.receiveShadow = true;
+      scene.add(curbH);
+    }
+  }
+  const crossingMat = new THREE.MeshStandardMaterial({ color: 0xe5e2d7, roughness: 0.78 });
+  for (let i = 0; i <= N; i += 2) {
+    for (let j = 0; j <= N; j += 2) {
+      const x = roadCenter(i);
+      const z = roadCenter(j);
+      for (let k = -3; k <= 3; k++) {
+        const stripeV = new THREE.Mesh(new THREE.BoxGeometry(ROAD - 2, 0.025, 0.38), crossingMat);
+        stripeV.position.set(x, 0.105, z + k * 0.72);
+        scene.add(stripeV);
+        const stripeH = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.025, ROAD - 2), crossingMat);
+        stripeH.position.set(x + k * 0.72, 0.11, z);
+        scene.add(stripeH);
+      }
+    }
   }
 
   // gritty desaturated building palette, windows glow at dusk
@@ -366,6 +404,28 @@ export function buildCity(scene) {
       const glow = new THREE.Mesh(glowGeo, glowMat);
       glow.position.set(x, 0.3, z);
       scene.add(glow);
+    }
+  }
+  const signalPoleMat = new THREE.MeshLambertMaterial({ color: 0x252930 });
+  const signalBodyMat = new THREE.MeshLambertMaterial({ color: 0x111318 });
+  const signalRedMat = new THREE.MeshLambertMaterial({ color: 0xd83935, emissive: 0x5d1111 });
+  const signalAmberMat = new THREE.MeshLambertMaterial({ color: 0xd39b32, emissive: 0x4b2e08 });
+  const signalGreenMat = new THREE.MeshLambertMaterial({ color: 0x3ca86b, emissive: 0x0d3d25 });
+  for (let i = 0; i <= N; i += 2) {
+    for (let j = 0; j <= N; j += 2) {
+      const x = roadCenter(i) + ROAD / 2 + 1.4;
+      const z = roadCenter(j) + ROAD / 2 + 1.4;
+      const signalPole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 4.4, 6), signalPoleMat);
+      signalPole.position.set(x, 2.2, z);
+      scene.add(signalPole);
+      const signalHead = new THREE.Mesh(new THREE.BoxGeometry(0.42, 1.15, 0.28), signalBodyMat);
+      signalHead.position.set(x, 4.25, z);
+      scene.add(signalHead);
+      for (const [y, mat] of [[4.62, signalRedMat], [4.25, signalAmberMat], [3.88, signalGreenMat]]) {
+        const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.105, 8, 6), mat);
+        lamp.position.set(x, y, z - 0.16);
+        scene.add(lamp);
+      }
     }
   }
 
